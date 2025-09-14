@@ -39,3 +39,24 @@
 
 # debug information files
 *.dwo
+
+# C++ Libraries installed with vcpkg
+vcpkg_installed
+
+# VS folders
+.vs/
+ipch/
+*.opensdf
+*.sdf
+
+# User-specific files
+*.user
+*.suo
+*.VC.db
+*.VC.opendb
+
+# Output directories
+Debug/
+Release/
+x64/
+x86/

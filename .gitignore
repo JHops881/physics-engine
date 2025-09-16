@@ -60,3 +60,6 @@ Debug/
 Release/
 x64/
 x86/
+
+# glad c
+*glad.c

@@ -10,19 +10,27 @@ namespace phys {
   /*
   A physical object.
   */
-  class Object {
+  class NewtonianComponent {
     private:
       glm::vec3 position_;
       glm::vec3 velocity_;
       glm::vec3 force_;
       float mass_;
+      UUIDv4::UUID associated_collider_uuid_;
       
     public:
-      Object(const glm::vec3& position = glm::vec3(0.0f),
-             const glm::vec3& velocity = glm::vec3(0.0f),
-             float mass = 1.0f)
-        : position_(position), velocity_(velocity), force_(glm::vec3(0.0f)),
-          mass_(mass) {}
+        NewtonianComponent(
+            const glm::vec3& position = glm::vec3(0.0f),
+            const glm::vec3& velocity = glm::vec3(0.0f),
+            float mass = 1.0f,
+            const UUIDv4::UUID& associated_collider_uuid
+      )
+        : position_(position),
+          velocity_(velocity),
+          force_(glm::vec3(0.0f)),
+          mass_(mass),
+          associated_collider_uuid_(associated_collider_uuid)
+      {}
 
       const glm::vec3& GetPosition() const {
         return position_;
@@ -34,6 +42,10 @@ namespace phys {
 
       const glm::vec3& GetForce() const {
         return force_;
+      }
+
+      const UUIDv4::UUID& GetColliderUUID() const {
+        return associated_collider_uuid_;
       }
 
       float GetMass() const {
@@ -67,10 +79,66 @@ namespace phys {
       }
   };
 
+  enum ColliderType {
+    CUBE,
+    SPHERE
+  };
+
+  class ColliderComponent {
+  private:
+      ColliderType collider_type_;
+      UUIDv4::UUID associated_object_;
+      float scale_factor_;
+      glm::vec3 relative_position_;
+
+  public:
+      ColliderComponent(
+          ColliderType collider_type,
+          const UUIDv4::UUID& associated_object,
+          float scale_factor = 1.0f,
+          const glm::vec3& relative_position = glm::vec3(0.0f)
+      )
+        : collider_type_(collider_type),
+          associated_object_(associated_object),
+          scale_factor_(scale_factor),
+          relative_position_(relative_position)
+      {}
+  };
+
+  enum PhysicalObjectType {
+      STATIC,
+      DYNAMIC
+  };
+
+  /*
+  Hides the implementation of Static vs Dynamic Objects to the Developer.
+  */
+  class PhysicalObjectReference {
+  private:
+      PhysicalObjectType type_;
+      ColliderComponent* collider_;
+      NewtonianComponent* body_;
+
+  public:
+      PhysicalObjectReference(
+          PhysicalObjectType type,
+          ColliderComponent* collider,
+          NewtonianComponent* body
+      )
+        : type_(type),
+          collider_(collider),
+          body_(body)
+      {}
+
+
+
+  };
+
   class PhysicsWorldSingleton {
     private:
 
-      std::unordered_map<UUIDv4::UUID, Object> objects_;
+      std::unordered_map<UUIDv4::UUID, NewtonianComponent> objects_;
+      std::unordered_map<UUIDv4::UUID, ColliderComponent> colliders_;
       glm::vec3 gravity_ = glm::vec3(0, -9.81f, 0);
 
       UUIDv4::UUIDGenerator<std::mt19937_64> uuid_generator_;
@@ -93,13 +161,42 @@ namespace phys {
       }
       
       /*
-      Create a new physical object. Returns the UUID of the object--which is
+      Create a new static object. Returns the UUID of the object--which is
       what the physics environment uses to refer to and retrieve it.
       */
-      const UUIDv4::UUID AddObject(Object object) noexcept {
+      const UUIDv4::UUID AddStaticObject(
+          const glm::vec3& position = glm::vec3(0.0f),
+          ColliderType collider_type,
+          float scale_factor = 1.0f
+      ) noexcept {
         UUIDv4::UUID uuid = uuid_generator_.getUUID();
-        objects_.emplace(uuid, std::move(object));
+        colliders_.emplace(uuid, ColliderComponent(
+            collider_type, NULL, scale_factor, position
+        ));
         return uuid;
+      }
+
+      /*
+      Create a new dynamic object. Returns the UUID of the object--which is
+      what the physics environment uses to refer to and retrieve it.
+      */
+      const UUIDv4::UUID AddDynamicObject(
+          const glm::vec3& position = glm::vec3(0.0f),
+          const glm::vec3& velocity = glm::vec3(0.0f),
+          float mass = 1.0f,
+          ColliderType collider_type,
+          float scale_factor = 1.0f,
+          const glm::vec3& relative_position = glm::vec3(0.0f)
+      ) noexcept {
+        UUIDv4::UUID obj_uuid = uuid_generator_.getUUID();
+        UUIDv4::UUID collider_uuid = uuid_generator_.getUUID();
+        objects_.emplace(obj_uuid, NewtonianComponent(
+            position, velocity, mass, collider_uuid
+        ));
+        colliders_.emplace(collider_uuid, ColliderComponent(
+            collider_type, obj_uuid, scale_factor, relative_position
+        ));
+        return obj_uuid;
       }
 
       /*
@@ -114,9 +211,21 @@ namespace phys {
       Please use your returned Objects responsibly! Never request a UUID that
       doesn't exist--I haven't added error handling..
       */
-      Object& GetObject(const UUIDv4::UUID& uuid) {
-        auto pair = objects_.find(uuid);
-        Object& object = pair->second;
+      PhysicalObjectReference GetObject(const UUIDv4::UUID& uuid) {
+        // Check if Dynamic
+        if (objects_.find(uuid) != objects_.end()) {
+          auto pair = objects_.find(uuid);
+          NewtonianComponent* object = &pair->second;
+          ColliderComponent* collider = &colliders_.find(object->GetColliderUUID())->second;
+        }
+        // Must be static
+        else {
+            // TODO
+
+        }
+
+
+
         return object;
       }
 

@@ -1,10 +1,9 @@
 #include <iostream>
 #include "Physics.h"
+#include "Renderer.h"
 #include <chrono>
 #include <format>
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
 
 /*
 Display the information about the physical object to the stdout. 
@@ -29,118 +28,24 @@ void DebugObject(const UUIDv4::UUID& uuid) {
   std::cout << message2 << std::endl << std::endl;
 }
 
-/* 
-OpenGL Viewport exists inside the GLFW Window. Call this function every time
-the GLFW window is resized, so that the viewport matches up with it. 
-*/
-void FrameBufferSizeCallback(GLFWwindow* window, int width, int height) {
-  glViewport(0, 0, width, height);
-}
 
-/*
-Handle keyboard and mouse input within the glfw window--call each frame.
-*/
-void ProcessInput(GLFWwindow* window) {
-  if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-    glfwSetWindowShouldClose(window, true);
-  }
-}
-
-/*
-Create, compile new shader. Returns OpenGL object ID.
-*/
-unsigned int CompileShader(const char* shader_source, int shader_type) {
-  unsigned int shader_id = glCreateShader(shader_type);
-  glShaderSource(shader_id, 1, &shader_source, NULL);
-  glCompileShader(shader_id);
-
-  int success;
-  char info_log[512];
-  glGetShaderiv(shader_id, GL_COMPILE_STATUS, &success);
-
-  const char* shader_type_str;
-  if (shader_type == GL_VERTEX_SHADER) {
-    shader_type_str = "vertex";
-  }
-  else if (shader_type == GL_FRAGMENT_SHADER){
-     shader_type_str = "fragment";
-  }
-  
-  if (!success) {
-    glGetShaderInfoLog(shader_id, 512, NULL, info_log);
-    std::cout << "Error, " << shader_type << " shader failed to compile.\n"
-      << info_log << std::endl;
-  }
-
-  return shader_id;
-}
-
-unsigned int CreateShaderProgramRoutine(
-  const char* vertex_shader_source,
-  const char* fragment_shader_source
-) {
-
-  unsigned int vertex_shader = CompileShader(vertex_shader_source,
-    GL_VERTEX_SHADER);
-
-  unsigned int fragment_shader = CompileShader(fragment_shader_source,
-    GL_FRAGMENT_SHADER);
-
-  unsigned int shader_program = glCreateProgram();
-
-  glAttachShader(shader_program, vertex_shader);
-  glAttachShader(shader_program, fragment_shader);
-  glLinkProgram(shader_program);
-
-  int success;
-  char info_log[512];
-  glGetProgramiv(shader_program, GL_LINK_STATUS, &success);
-  if (!success) {
-    glGetProgramInfoLog(shader_program, 512, NULL, info_log);
-    std::cout << "Shader program failed to link.\n" << info_log << std::endl;
-  }
-
-  glDeleteShader(vertex_shader);
-  glDeleteShader(fragment_shader);
-
-  return shader_program;
-
-}
 
 int main() {
 
-  // Instantiate the GLFW window.
-  glfwInit();
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-  // Create GLFW window object.
-  unsigned int window_width  = 800, window_height = 600;
-  const char* window_title = "Physics Engine: Simulated View";
-  GLFWwindow* window = glfwCreateWindow(
-    window_width, window_height, window_title, NULL, NULL);
-  if (window == NULL) {
-    std::cout << "Failed to create GLFW window" << std::endl;
-    glfwTerminate();
-    return -1;
-  }
-  glfwMakeContextCurrent(window);
-
-  // Initialize GLAD
-  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-    std::cout << "Failed to intialize GLAD" << std::endl;
-    return -1;
-  }
-
-  glViewport(0, 0, window_width, window_height);
-  glfwSetFramebufferSizeCallback(window, FrameBufferSizeCallback);
+  GLFWwindow* window =
+    gfx::SetupWindow(800, 600, "Physics Engine: Simulated View");
     
   // Having fun with shapes!
   float vertices[] = {
-    -0.5f, -0.5f, 0.0f,
+     0.5f,  0.5f, 0.0f,
      0.5f, -0.5f, 0.0f,
-     0.0f,  0.5f, 0.0f,
+    -0.5f, -0.5f, 0.0f,
+    -0.5f,  0.5f, 0.0f
+  };
+
+  unsigned int indices[] = {
+    0, 1, 3,
+    1, 2, 3
   };
 
   const char* vertex_shader_source = 
@@ -160,9 +65,10 @@ int main() {
     "}\0";
 
   unsigned int shader_program =
-    CreateShaderProgramRoutine(vertex_shader_source, fragment_shader_source);
+    gfx::CreateShaderProgramRoutine(vertex_shader_source,
+                                    fragment_shader_source);
 
-    unsigned int vbo;
+  unsigned int vbo;
   glGenBuffers(1, &vbo);
 
   unsigned int vao;
@@ -172,6 +78,10 @@ int main() {
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
   glEnableVertexAttribArray(0);
+
+  unsigned int ebo;
+  glGenBuffers(1, &ebo);
+
 
 
   std::cout << "initializing.." << std::endl;
@@ -205,7 +115,7 @@ int main() {
       accumulator -= tick_rate;
     }
 
-    ProcessInput(window);
+    gfx::ProcessInput(window);
 
     // Rendering here .. 
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);

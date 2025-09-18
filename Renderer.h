@@ -6,11 +6,11 @@
 #include <iostream>
 
 namespace gfx {
-  
+
   /*
-OpenGL Viewport exists inside the GLFW Window. Call this function every time
-the GLFW window is resized, so that the viewport matches up with it.
-*/
+  OpenGL Viewport exists inside the GLFW Window. Call this function every time
+  the GLFW window is resized, so that the viewport matches up with it.
+  */
   void FrameBufferSizeCallback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
   }
@@ -57,7 +57,6 @@ the GLFW window is resized, so that the viewport matches up with it.
     const char* vertex_shader_source,
     const char* fragment_shader_source
   ) {
-
     unsigned int vertex_shader = CompileShader(vertex_shader_source,
       GL_VERTEX_SHADER);
 
@@ -82,7 +81,6 @@ the GLFW window is resized, so that the viewport matches up with it.
     glDeleteShader(fragment_shader);
 
     return shader_program;
-
   }
 
   /*
@@ -120,7 +118,5 @@ the GLFW window is resized, so that the viewport matches up with it.
     glfwSetFramebufferSizeCallback(window, FrameBufferSizeCallback);
 
     return window;
-
   }
-
 }

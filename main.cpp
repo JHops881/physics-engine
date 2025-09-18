@@ -4,14 +4,13 @@
 #include <chrono>
 #include <format>
 
-
 /*
-Display the information about the physical object to the stdout. 
+Display the information about the physical object to the stdout.
 Namely, the UUID, posiion, and velocity.
 */
 void DebugObject(const UUIDv4::UUID& uuid) {
-  phys::Object& object =
-    phys::PhysicsWorldSingleton::getInstance().GetObject(uuid);
+  phys::ObjectInteractor object =
+    phys::PhysicsEnvSingleton::getInstance().GetObject(uuid);
   const glm::vec3& position = object.GetPosition();
   const glm::vec3& velocity = object.GetVelocity();
 
@@ -28,13 +27,10 @@ void DebugObject(const UUIDv4::UUID& uuid) {
   std::cout << message2 << std::endl << std::endl;
 }
 
-
-
 int main() {
-
   GLFWwindow* window =
     gfx::SetupWindow(800, 600, "Physics Engine: Simulated View");
-    
+
   // Having fun with shapes!
   float vertices[] = {
      0.5f,  0.5f, 0.0f,
@@ -48,7 +44,7 @@ int main() {
     1, 2, 3
   };
 
-  const char* vertex_shader_source = 
+  const char* vertex_shader_source =
     "#version 330 core\n"
     "layout (location = 0) in vec3 aPos;\n"
     "void main()\n"
@@ -56,7 +52,7 @@ int main() {
     "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
     "}\0";
 
-  const char* fragment_shader_source = 
+  const char* fragment_shader_source =
     "#version 330 core\n"
     "out vec4 FragColor;\n"
     "void main()\n"
@@ -66,7 +62,7 @@ int main() {
 
   unsigned int shader_program =
     gfx::CreateShaderProgramRoutine(vertex_shader_source,
-                                    fragment_shader_source);
+      fragment_shader_source);
 
   unsigned int vbo;
   glGenBuffers(1, &vbo);
@@ -82,14 +78,13 @@ int main() {
   unsigned int ebo;
   glGenBuffers(1, &ebo);
 
-
-
   std::cout << "initializing.." << std::endl;
-  // Make an object
-  phys::Object my_object;
-  UUIDv4::UUID my_uuid =
-    phys::PhysicsWorldSingleton::getInstance().AddObject(my_object);
 
+  // Make an object
+  UUIDv4::UUID my_uuid =
+    phys::PhysicsEnvSingleton::getInstance().AddAnimateObject(
+      phys::ColliderType::CUBE
+    );
 
   auto last_update_time = std::chrono::duration<double>(
     std::chrono::high_resolution_clock::now().time_since_epoch()
@@ -99,7 +94,6 @@ int main() {
 
   // Application loop
   while (!glfwWindowShouldClose(window)) {
-    
     double now_time = std::chrono::duration<double>(
       std::chrono::high_resolution_clock::now().time_since_epoch()
     ).count();
@@ -108,7 +102,7 @@ int main() {
     accumulator += delta_time;
 
     while (accumulator > tick_rate) {
-      phys::PhysicsWorldSingleton::getInstance().Step(tick_rate);
+      phys::PhysicsEnvSingleton::getInstance().Step(tick_rate);
 
       DebugObject(my_uuid);
 
@@ -117,7 +111,7 @@ int main() {
 
     gfx::ProcessInput(window);
 
-    // Rendering here .. 
+    // Rendering here ..
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -127,7 +121,6 @@ int main() {
 
     glfwSwapBuffers(window);
     glfwPollEvents();
-    
   }
 
   // Clean Up.

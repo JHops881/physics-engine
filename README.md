@@ -1,5 +1,5 @@
 # physics-engine
-Trying my hand at making a real-time physics engine for use in a top-down game. First big C++ project!
+Trying my hand at making a real-time 3D physics engine. First big C++ project!
 
 ### How it's going so far.. It works!
 Debug information for an object getting simulated falling in a void. 

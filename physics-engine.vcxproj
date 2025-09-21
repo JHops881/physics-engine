@@ -112,6 +112,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)vcpkg_installed\x64-windows\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,6 +130,8 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)vcpkg_installed\x64-windows\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -143,6 +146,7 @@
     <ClCompile Include="ObjectInteractor.cpp" />
     <ClCompile Include="PhysicsEnvSingleton.cpp" />
     <ClCompile Include="RigidBody.cpp" />
+    <ClCompile Include="VulkanApplication.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collider.hpp" />
@@ -150,6 +154,11 @@
     <ClInclude Include="physics.hpp" />
     <ClInclude Include="PhysicsEnvSingleton.hpp" />
     <ClInclude Include="RigidBody.hpp" />
+    <ClInclude Include="VulkanApplication.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\compile.bat" />
+    <None Include="shaders\shader.slang" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

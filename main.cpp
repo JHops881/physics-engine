@@ -1,10 +1,10 @@
-#include "VulkanApplication.hpp"
+#include "OpenGLApplication.hpp"
 
 int main()
 {
     // std::cout << std::is_trivially_copyable<>::value << std::endl;
 
-    VulkanApplication app;
+    OpenGLApplication app;
     try
     {
         app.Run();

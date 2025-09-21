@@ -30,7 +30,7 @@
     <ClCompile Include="PhysicsEnvSingleton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VulkanApplication.cpp">
+    <ClCompile Include="OpenGLApplication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,16 +50,16 @@
     <ClInclude Include="PhysicsEnvSingleton.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VulkanApplication.hpp">
+    <ClInclude Include="OpenGLApplication.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\shader.slang">
+    <None Include="shaders\shader.frag">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="shaders\compile.bat">
-      <Filter>Source Files</Filter>
+    <None Include="shaders\shader.vert">
+      <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
 </Project>

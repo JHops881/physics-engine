@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -141,20 +141,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="EntityManager.cpp" />
+    <ClCompile Include="EntityManager.hpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="ObjectInteractor.cpp" />
-    <ClCompile Include="PhysicsEnvSingleton.cpp" />
-    <ClCompile Include="RigidBody.cpp" />
-    <ClCompile Include="OpenGLApplication.cpp" />
+    <ClCompile Include="PhysSimApplication.cpp" />
+    <ClCompile Include="SparseSet.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Collider.hpp" />
-    <ClInclude Include="ObjectInteractor.hpp" />
-    <ClInclude Include="physics.hpp" />
-    <ClInclude Include="PhysicsEnvSingleton.hpp" />
-    <ClInclude Include="RigidBody.hpp" />
-    <ClInclude Include="OpenGLApplication.hpp" />
+    <ClInclude Include="PhysSimApplication.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\shader.frag" />

@@ -2,7 +2,6 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "physics.hpp"
 
 #include <chrono>
 #include <format>
@@ -11,6 +10,8 @@
 #include <stdexcept>
 #include <cstdlib>
 #include <fstream>
+
+#include "EntityManager.hpp"
 
 constexpr uint32_t WIDTH = 800;
 constexpr uint32_t HEIGHT = 600;
@@ -22,48 +23,46 @@ constexpr uint32_t HEIGHT = 600;
 /// <param name="window">: pointer to active GLFW window with OpenGL context</param>
 /// <param name="width">: (automatically passed in) new window width</param>
 /// <param name="height">: (automatically passed in) new window width</param>
-static void FrameBufferSizeCallback(GLFWwindow* window, int width, int height);
-
-std::string ReadFile(const char* filepath);
+static void frame_buffer_size_callback(GLFWwindow* window, int width, int height);
 
 /// <summary>
 /// An application running Vulkan in a GLFW window
 /// </summary>
-class OpenGLApplication
+class PhysSimApplication
 {
   private:
-    GLFWwindow* window_;
+    GLFWwindow*        window;
+    ecs::EntityManager entity_manager;
     
     /// <summary>
     /// Handle keyboard and mouse input within the glfw window--call each frame.
     /// </summary>
-    void ProcessInput();
+    void process_input();
 
-    unsigned int CompileShader(const char* shader_source, int shader_type);
+    void init_glfw();
 
-    unsigned int CreateShaderProgramRoutine(const char* vertex_shader_source, const char* fragment_shader_source);
+    void init_objects();
 
     /// <summary>
     /// Initializes GLFW, creates the window, binds the OpenGL context to the window,
     /// initializes GLAD, creates an OpenGL Viewport in the window, and configures
     /// relevant viewport settings for seamless use.
     /// </summary>
-    void Init();
+    void init();
 
     /// <summary>
     /// Execute the applications main loop
     /// </summary>
-    void MainLoop();
+    void main_loop();
 
     /// <summary>
     /// Clean up application resources after exiting
     /// </summary>
-    void CleanUp();
+    void cleanup();
 
   public:
     /// <summary>
     /// Start & run the application until termination
     /// </summary>
-    void Run();
-
+    void run();
 };

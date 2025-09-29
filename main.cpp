@@ -1,13 +1,13 @@
-#include "OpenGLApplication.hpp"
+#include "PhysSimApplication.hpp"
 
 int main()
 {
     // std::cout << std::is_trivially_copyable<>::value << std::endl;
 
-    OpenGLApplication app;
+    PhysSimApplication app;
     try
     {
-        app.Run();
+        app.run();
     }
     catch (const std::exception& exception)
     {

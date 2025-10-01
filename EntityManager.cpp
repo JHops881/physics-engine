@@ -148,7 +148,7 @@ void ecs::EntityManager::attach_mesh(uint32_t entity_id, Mesh mesh)
 // We can make this faster by precalculating which Entities have both position and rigidbody, in a vector.
 void ecs::EntityManager::physics_step(float delta_time)
 {
-    glm::vec3 gravity = glm::vec3(0, -9.81f, 0);
+    glm::vec3 gravity = glm::vec3(0, -9.806f, 0);
 
     size_t i = 0;
     for (RigidBody& body : rigid_bodies.get_dense())
@@ -170,7 +170,7 @@ void ecs::EntityManager::physics_step(float delta_time)
                 body.velocity += (body.force / body.mass) * delta_time;
             }
 
-            position.value += body.velocity / delta_time;
+            position.value += body.velocity * delta_time;
             body.force = glm::vec3(0.0f);
         }
         i++;
@@ -200,11 +200,35 @@ void ecs::EntityManager::debug_objects()
 
 void ecs::EntityManager::draw()
 {
+    glm::mat4 model_matrix = glm::mat4(1.0f);
+    //model_matrix = glm::rotate(model_matrix, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+    glm::mat4 view_matrix = glm::mat4(1.0f);
+
+
+    glm::mat4 projection_matrix = glm::perspective(glm::radians(45.0f), (float)800 / (float)600, 0.1f, 100.0f);
+
+    size_t i = 0;
     for (Mesh& mesh : meshes.get_dense())
     {
+        Position& position = positions.get(meshes.get_associated_handle(i));
+
+        uint32_t model_location = glGetUniformLocation(mesh.shader, "model");
+        glUniformMatrix4fv(model_location, 1, GL_FALSE, glm::value_ptr(model_matrix));
+
+        // note that we're translating the scene in the reverse direction of where we want to move
+        view_matrix = glm::translate(view_matrix, position.value);
+
+        uint32_t view_location = glGetUniformLocation(mesh.shader, "view");
+        glUniformMatrix4fv(view_location, 1, GL_FALSE, glm::value_ptr(view_matrix));
+
+        uint32_t projection_location = glGetUniformLocation(mesh.shader, "projection");
+        glUniformMatrix4fv(projection_location, 1, GL_FALSE, glm::value_ptr(projection_matrix));
+
         glUseProgram(mesh.shader);
         glBindVertexArray(mesh.vao);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
+        i++;
     }
 }

@@ -46,16 +46,35 @@ void PhysSimApplication::init_objects()
     // Having fun with shapes!
     float vertices[]
     {  // positions        // colors
-       0.5f,  0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
-       0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
-      -0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f,
-      -0.5f,  0.5f, 0.0f,  1.0f, 1.0f, 1.0f
+       0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f, //0
+       0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f, //1
+       0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, //2
+      -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 1.0f, //3
+      -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f, //4
+       0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 1.0f, //5
+      -0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 1.0f, //6
+      -0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 0.0f, //7
     };
 
     unsigned int indices[]
     {
-      0, 1, 3,
-      1, 2, 3
+      3, 2, 1,
+      1, 4, 3,
+
+      6, 5, 0,
+      0, 7, 6,
+
+      7, 4, 3,
+      3, 6, 7,
+
+      0, 1, 2,
+      2, 5, 0,
+
+      3, 2, 5,
+      5, 6, 3,
+
+      4, 1, 0,
+      0, 7, 4
     };
 
     const char* vertex_shader_source = "shaders/shader.vert";
@@ -84,11 +103,13 @@ void PhysSimApplication::init_objects()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
+    // setup stuff
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glEnable(GL_DEPTH_TEST);
 
     uint32_t entity = entity_manager.new_entity();
     entity_manager.attach_collider(entity, ecs::ColliderType::CUBE);
-    entity_manager.attach_position(entity, ecs::Position{ glm::vec3(0.0f) });
+    entity_manager.attach_position(entity, { glm::vec3(0.0f, 6.0f, -10.5f) });
     entity_manager.attach_rigid_body(entity, {
     glm::vec3(0.0f),
     glm::vec3(0.0f),
@@ -106,7 +127,8 @@ void PhysSimApplication::init()
 void PhysSimApplication::main_loop()
 {
     auto last_update_time = std::chrono::duration<double>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
-    const double tick_rate = 1.0; // in updates/sec
+    const double tick_rate = 60.0; // in updates/sec
+    const double tick_duration = 1.0 / tick_rate; // 1 second / ticks per second = length of a tick
     double accumulator = 0;
 
     // Application loop
@@ -119,18 +141,18 @@ void PhysSimApplication::main_loop()
         last_update_time += delta_time;
         accumulator += delta_time;
 
-        while (accumulator > tick_rate)
+        while (accumulator > tick_duration)
         {
-            entity_manager.physics_step(tick_rate);
+            entity_manager.physics_step(tick_duration);
 
             entity_manager.debug_objects();
 
-            accumulator -= tick_rate;
+            accumulator -= tick_duration;
         }
 
         // Rendering here ..
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         entity_manager.draw();
 

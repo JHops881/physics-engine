@@ -1,9 +1,8 @@
 #pragma once
-
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include "MeshRegistry.hpp"
+#include "PhysicsSystem.hpp"
+#include "RenderingSystem.hpp"
+#include "ShaderSystem.hpp"
 
 #include <chrono>
 #include <format>
@@ -13,7 +12,10 @@
 #include <cstdlib>
 #include <fstream>
 
-#include "EntityManager.hpp"
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 constexpr uint32_t WIDTH = 800;
 constexpr uint32_t HEIGHT = 600;
@@ -28,13 +30,16 @@ constexpr uint32_t HEIGHT = 600;
 static void frame_buffer_size_callback(GLFWwindow* window, int width, int height);
 
 /// <summary>
-/// An application running Vulkan in a GLFW window
+/// An application running OpenGL in a GLFW window
 /// </summary>
 class PhysSimApplication
 {
   private:
-    GLFWwindow*        window;
-    ecs::EntityManager entity_manager;
+    GLFWwindow*                           window;
+    std::shared_ptr<gfx::ShaderSystem>    shader_system;
+    std::shared_ptr<gfx::MeshRegistry>    mesh_registry;
+    std::shared_ptr<phys::PhysicsSystem>  physics_system;
+    std::shared_ptr<gfx::RenderingSystem> rendering_system;
     
     /// <summary>
     /// Handle keyboard and mouse input within the glfw window--call each frame.
@@ -63,6 +68,14 @@ class PhysSimApplication
     void cleanup();
 
   public:
+    PhysSimApplication
+    (
+        std::shared_ptr<gfx::ShaderSystem>    shader_system,
+        std::shared_ptr<gfx::MeshRegistry>    mesh_registry,
+        std::shared_ptr<phys::PhysicsSystem>  physics_system,
+        std::shared_ptr<gfx::RenderingSystem> rendering_system
+    );
+
     /// <summary>
     /// Start & run the application until termination
     /// </summary>

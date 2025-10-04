@@ -1,10 +1,17 @@
 #include "PhysSimApplication.hpp"
+#include "MeshRegistry.hpp"
+#include "PhysicsSystem.hpp"
+#include "RenderingSystem.hpp"
+#include "ShaderSystem.hpp"
 
 int main()
 {
-    // std::cout << std::is_trivially_copyable<>::value << std::endl;
+    std::shared_ptr<gfx::ShaderSystem>    shader_system    = std::make_shared<gfx::ShaderSystem>();
+    std::shared_ptr<gfx::MeshRegistry>    mesh_registry    = std::make_shared<gfx::MeshRegistry>();
+    std::shared_ptr<phys::PhysicsSystem>  physics_system   = std::make_shared<phys::PhysicsSystem>();
+    std::shared_ptr<gfx::RenderingSystem> rendering_system = std::make_shared<gfx::RenderingSystem>(mesh_registry, physics_system);
 
-    PhysSimApplication app;
+    PhysSimApplication app(shader_system, mesh_registry, physics_system, rendering_system);
     try
     {
         app.run();

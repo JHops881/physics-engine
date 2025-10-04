@@ -15,6 +15,9 @@ class SparseSet
     std::vector<T>        dense{};
     std::vector<uint32_t> associated_handles{}; // for any index 'i' in dense_, associated_handles_ stores the handle
     std::vector<uint32_t> sparse{};             // associated to the object at associated_handles_[i].
+
+    uint32_t              next_handle = 0;
+    std::vector<uint32_t> free_handles{};       // stores retired entity ids that can be reused
     
   public:
     SparseSet(size_t size = 1000)
@@ -22,25 +25,31 @@ class SparseSet
         sparse.resize(size, INVALID_HANDLE);
     }
 
-    void add(uint32_t handle, const T& object)
+    uint32_t add(const T& object)
     {
-        if (handle < sparse.size())
+        uint32_t handle;
+        if (free_handles.empty())
         {
-            if (sparse[handle] == INVALID_HANDLE)
-            {
-                uint32_t index = dense.size();
-                dense.push_back(object);
-                associated_handles.push_back(handle);
-                sparse[handle] = index;
-            }
-            else
-            {
-                throw std::runtime_error("SparseSet::Add() failed. Handle already exists.");
-            }
+            handle = next_handle;
+            next_handle++;
         }
         else
         {
-            throw std::runtime_error("SparseSet::Add() failed. Handle is out of range.");
+            handle = free_handles.back();
+            free_handles.pop_back();
+        }
+
+        if (sparse[handle] == INVALID_HANDLE)
+        {
+            uint32_t index = dense.size();
+            dense.push_back(object);
+            associated_handles.push_back(handle);
+            sparse[handle] = index;
+            return handle;
+        }
+        else
+        {
+            throw std::runtime_error("SparseSet::Add() failed. Handle already exists.");
         }
     }
 
@@ -68,30 +77,6 @@ class SparseSet
         }
     }
 
-    const T& get_const(uint32_t handle) const
-    {
-        size_t index = 0;
-        if (handle < sparse.size())
-        {
-            index = sparse[handle];
-        }
-        else
-        {
-            throw std::runtime_error("SparseSet::GetConst() failed. Handle is out of range.");
-        }
-
-        if (index != INVALID_HANDLE)
-        {
-            return dense[index];
-        }
-        else
-        {
-            std::string message = std::string("SparseSet::GetConst() failed. Nothing exists at this handle -> ")
-                                + std::to_string(handle);
-            throw std::runtime_error(message);
-        }
-    }
-
     void remove(uint32_t handle)
     {
         if (handle < sparse.size())
@@ -110,6 +95,7 @@ class SparseSet
 
                 associated_handles.pop_back();
                 dense.pop_back();
+                free_handles.push_back(handle);
             }
             else
             {

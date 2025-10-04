@@ -18,27 +18,39 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PhysicsEnv.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PhysSimApplication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SparseSet.hpp">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer.cpp">
+    <ClCompile Include="PhysicsSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshRegistry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderingSystem.hpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderingSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PhysicsEnv.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PhysSimApplication.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer.hpp">
+    <ClInclude Include="PhysicsSystem.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshRegistry.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderSystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

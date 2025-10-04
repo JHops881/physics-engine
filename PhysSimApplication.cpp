@@ -80,7 +80,7 @@ void PhysSimApplication::init_objects()
     const char* vertex_shader_source = "shaders/shader.vert";
     const char* fragment_shader_source = "shaders/shader.frag";
 
-    uint32_t shader_program = create_shader_program(vertex_shader_source, fragment_shader_source);
+    uint32_t shader_program = shader_system->create_shader_program(vertex_shader_source, fragment_shader_source);
 
     uint32_t vbo;
     glGenBuffers(1, &vbo);
@@ -107,15 +107,9 @@ void PhysSimApplication::init_objects()
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glEnable(GL_DEPTH_TEST);
 
-    uint32_t entity = entity_manager.new_entity();
-    entity_manager.attach_collider(entity, ecs::ColliderType::CUBE);
-    entity_manager.attach_position(entity, { glm::vec3(0.0f, 6.0f, -10.5f) });
-    entity_manager.attach_rigid_body(entity, {
-    glm::vec3(0.0f),
-    glm::vec3(0.0f),
-    1.0f
-    });
-    entity_manager.attach_mesh(entity, {vbo, vao, ebo, shader_program});
+    phys::DynamicID   phys_id = physics_system->add_dynamic(glm::vec3(0.0f, 6.0f, -10.5f), glm::vec3(0.0f), glm::vec3(0.0f), 1.0f);
+    gfx::MeshID       mesh_id = mesh_registry->add_mesh({ vbo, vao, ebo, shader_program });
+    gfx::RenderableID rend_id = rendering_system->new_renderable({mesh_id, phys_id});
 }
 
 void PhysSimApplication::init()
@@ -143,9 +137,9 @@ void PhysSimApplication::main_loop()
 
         while (accumulator > tick_duration)
         {
-            entity_manager.physics_step(tick_duration);
+            physics_system->step(tick_duration);
 
-            entity_manager.debug_objects();
+            physics_system->debug_objects();
 
             accumulator -= tick_duration;
         }
@@ -154,7 +148,7 @@ void PhysSimApplication::main_loop()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        entity_manager.draw();
+        rendering_system->render();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -165,6 +159,21 @@ void PhysSimApplication::cleanup()
 {
     glfwDestroyWindow(window);
     glfwTerminate();
+}
+
+PhysSimApplication::PhysSimApplication
+(
+    std::shared_ptr<gfx::ShaderSystem>    shader_system,
+    std::shared_ptr<gfx::MeshRegistry>    mesh_registry,
+    std::shared_ptr<phys::PhysicsSystem>  physics_system,
+    std::shared_ptr<gfx::RenderingSystem> rendering_system
+)
+    :
+    shader_system(std::move(shader_system)),
+    mesh_registry(std::move(mesh_registry)),
+    physics_system(std::move(physics_system)),
+    rendering_system(std::move(rendering_system))
+{
 }
 
 void PhysSimApplication::run()

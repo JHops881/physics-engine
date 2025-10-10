@@ -4,6 +4,8 @@
 #include <stdexcept>
 #include <iostream>
 #include <format>
+#include <vector>
+#include <chrono>
 
 #include <glm/glm.hpp>
 
@@ -44,13 +46,21 @@ struct StaticObject
     glm::vec3 position;
 };
 
+struct CollisionEvent
+{
+    DynamicID colliding_id;
+    bool      is_x_plane;
+    bool      is_y_plane;
+    bool      is_z_plane;
+};
+
 class PhysicsSystem
 {
     private:
     SparseSet<DynamicObject> dynamic_objects;
     SparseSet<StaticObject>  static_objects;
 
-    glm::vec3                gravity          = glm::vec3(0, -9.806f, 0);
+    glm::vec3                gravity          = glm::vec3(0.0f, -9.806f, 0.0f);
 
     public:
     StaticObject& get_static(StaticID id);
@@ -64,6 +74,10 @@ class PhysicsSystem
     void remove_static(StaticID id);
 
     void remove_dynamic(DynamicID id);
+
+    const glm::vec3 get_overlap(const glm::vec3& pos1, const glm::vec3 pos2, float half_width) const;
+
+    const bool are_colliding(phys::DynamicObject& a, phys::StaticObject b) const;
 
     void step(float delta_time);
 

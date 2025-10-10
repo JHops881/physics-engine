@@ -17,8 +17,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-constexpr uint32_t WIDTH = 800;
-constexpr uint32_t HEIGHT = 600;
+constexpr uint32_t WIDTH = 1600;
+constexpr uint32_t HEIGHT = 900;
 
 /// <summary>
 /// OpenGL Viewport exists inside the GLFW Window. Call this function every time

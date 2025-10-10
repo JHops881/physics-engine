@@ -104,12 +104,56 @@ void PhysSimApplication::init_objects()
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     // setup stuff
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glEnable(GL_DEPTH_TEST);
 
-    phys::DynamicID   phys_id = physics_system->add_dynamic(glm::vec3(0.0f, 6.0f, -10.5f), glm::vec3(0.0f), glm::vec3(0.0f), 1.0f);
     gfx::MeshID       mesh_id = mesh_registry->add_mesh({ vbo, vao, ebo, shader_program });
-    gfx::RenderableID rend_id = rendering_system->new_renderable({mesh_id, phys_id});
+
+    phys::DynamicID   ap = physics_system->add_dynamic(glm::vec3(-3.0f, 0.0f, -6.5f), glm::vec3(0.0f), glm::vec3(200.0f, 5000.0f, 0.0f), 1.0f);
+    gfx::RenderableID ar = rendering_system->new_renderable({mesh_id, ap});
+
+    std::vector<glm::vec3> block_positions
+    {
+        glm::vec3(-6, -3, -6.5f),
+        glm::vec3(-5, -3, -6.5f),
+        glm::vec3(-4, -3, -6.5f),
+        glm::vec3(-3, -3, -6.5f),
+        glm::vec3(-2, -3, -6.5f),
+        glm::vec3(-1, -3, -6.5f),
+        glm::vec3(0, -3, -6.5f),
+        glm::vec3(1, -3, -6.5f),
+        glm::vec3(2, -3, -6.5f),
+        glm::vec3(3, -3, -6.5f),
+        glm::vec3(5, -3, -6.5f),
+        glm::vec3(4, -3, -6.5f),
+        glm::vec3(6, -3, -6.5f),
+
+        glm::vec3(6, -2, -6.5f),
+        glm::vec3(6, -1, -6.5f),
+        glm::vec3(6, -0, -6.5f),
+        glm::vec3(6, 1, -6.5f),
+        glm::vec3(6, 2, -6.5f),
+
+        glm::vec3(-6, 3, -6.5f),
+        glm::vec3(-5, 3, -6.5f),
+        glm::vec3(-4, 3, -6.5f),
+        glm::vec3(-3, 3, -6.5f),
+        glm::vec3(-2, 3, -6.5f),
+        glm::vec3(-1, 3, -6.5f),
+        glm::vec3(0, 3, -6.5f),
+        glm::vec3(1, 3, -6.5f),
+        glm::vec3(2, 3, -6.5f),
+        glm::vec3(3, 3, -6.5f),
+        glm::vec3(5, 3, -6.5f),
+        glm::vec3(4, 3, -6.5f),
+        glm::vec3(6, 3, -6.5f),
+    
+    };
+    for (glm::vec3& block_pos : block_positions)
+    {
+        phys::StaticID id = physics_system->add_static(block_pos);
+        rendering_system->new_renderable({ mesh_id, id });
+    }
 }
 
 void PhysSimApplication::init()

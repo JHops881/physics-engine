@@ -38,7 +38,7 @@ class RenderingSystem
     SparseSet<Renderable>                renderables;
 
     glm::mat4 model_matrix      = glm::mat4(1.0f);
-    glm::mat4 projection_matrix = glm::perspective(glm::radians(45.0f), (float)800 / (float)600, 0.1f, 100.0f);
+    glm::mat4 projection_matrix = glm::perspective(glm::radians(72.0f), (float)1600 / (float)900, 0.1f, 100.0f);
 
   public:
     RenderingSystem(std::shared_ptr<MeshRegistry> mesh_registry, std::shared_ptr<phys::PhysicsSystem> physics_system);

@@ -30,10 +30,10 @@
     <ClCompile Include="MeshRegistry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderingSystem.hpp">
+    <ClCompile Include="LowLevelRenderer.hpp">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderingSystem.cpp">
+    <ClCompile Include="LowLevelRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ShaderSystem.cpp">
@@ -51,6 +51,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ShaderSystem.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

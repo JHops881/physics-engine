@@ -107,53 +107,10 @@ void PhysSimApplication::init_objects()
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glEnable(GL_DEPTH_TEST);
 
-    gfx::MeshID       mesh_id = mesh_registry->add_mesh({ vbo, vao, ebo, shader_program });
+    core::MeshID       mesh_id = mesh_registry->add_mesh({ vbo, vao, ebo, shader_program });
 
-    phys::DynamicID   ap = physics_system->add_dynamic(glm::vec3(-3.0f, 0.0f, -6.5f), glm::vec3(0.0f), glm::vec3(200.0f, 5000.0f, 0.0f), 1.0f);
-    gfx::RenderableID ar = rendering_system->new_renderable({mesh_id, ap});
-
-    std::vector<glm::vec3> block_positions
-    {
-        glm::vec3(-6, -3, -6.5f),
-        glm::vec3(-5, -3, -6.5f),
-        glm::vec3(-4, -3, -6.5f),
-        glm::vec3(-3, -3, -6.5f),
-        glm::vec3(-2, -3, -6.5f),
-        glm::vec3(-1, -3, -6.5f),
-        glm::vec3(0, -3, -6.5f),
-        glm::vec3(1, -3, -6.5f),
-        glm::vec3(2, -3, -6.5f),
-        glm::vec3(3, -3, -6.5f),
-        glm::vec3(5, -3, -6.5f),
-        glm::vec3(4, -3, -6.5f),
-        glm::vec3(6, -3, -6.5f),
-
-        glm::vec3(6, -2, -6.5f),
-        glm::vec3(6, -1, -6.5f),
-        glm::vec3(6, -0, -6.5f),
-        glm::vec3(6, 1, -6.5f),
-        glm::vec3(6, 2, -6.5f),
-
-        glm::vec3(-6, 3, -6.5f),
-        glm::vec3(-5, 3, -6.5f),
-        glm::vec3(-4, 3, -6.5f),
-        glm::vec3(-3, 3, -6.5f),
-        glm::vec3(-2, 3, -6.5f),
-        glm::vec3(-1, 3, -6.5f),
-        glm::vec3(0, 3, -6.5f),
-        glm::vec3(1, 3, -6.5f),
-        glm::vec3(2, 3, -6.5f),
-        glm::vec3(3, 3, -6.5f),
-        glm::vec3(5, 3, -6.5f),
-        glm::vec3(4, 3, -6.5f),
-        glm::vec3(6, 3, -6.5f),
-    
-    };
-    for (glm::vec3& block_pos : block_positions)
-    {
-        phys::StaticID id = physics_system->add_static(block_pos);
-        rendering_system->new_renderable({ mesh_id, id });
-    }
+    core::ParticleID  ap = physics_system->add_particle(glm::vec3(-3.0f, 2.0f, -16.5f));
+    core::RenderableID ar = rendering_system->new_renderable({mesh_id, ap});
 }
 
 void PhysSimApplication::init()
@@ -183,7 +140,7 @@ void PhysSimApplication::main_loop()
         {
             physics_system->step(tick_duration);
 
-            physics_system->debug_objects();
+            physics_system->debug_particles();
 
             accumulator -= tick_duration;
         }
@@ -207,10 +164,10 @@ void PhysSimApplication::cleanup()
 
 PhysSimApplication::PhysSimApplication
 (
-    std::shared_ptr<gfx::ShaderSystem>    shader_system,
-    std::shared_ptr<gfx::MeshRegistry>    mesh_registry,
-    std::shared_ptr<phys::PhysicsSystem>  physics_system,
-    std::shared_ptr<gfx::RenderingSystem> rendering_system
+    std::shared_ptr<core::ShaderSystem>    shader_system,
+    std::shared_ptr<core::MeshRegistry>    mesh_registry,
+    std::shared_ptr<core::PhysicsSystem>  physics_system,
+    std::shared_ptr<core::LowLevelRenderer> rendering_system
 )
     :
     shader_system(std::move(shader_system)),

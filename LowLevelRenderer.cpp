@@ -1,9 +1,9 @@
-#include "RenderingSystem.hpp"
+#include "LowLevelRenderer.hpp"
 
-gfx::RenderingSystem::RenderingSystem
+core::LowLevelRenderer::LowLevelRenderer
 (
     std::shared_ptr<MeshRegistry>        mesh_registry,
-    std::shared_ptr<phys::PhysicsSystem> physics_system
+    std::shared_ptr<core::PhysicsSystem> physics_system
 )
     :
     mesh_registry(std::move(mesh_registry)),
@@ -11,25 +11,25 @@ gfx::RenderingSystem::RenderingSystem
 {
 }
 
-gfx::RenderableID gfx::RenderingSystem::new_renderable(const Renderable& renderable)
+core::RenderableID core::LowLevelRenderer::new_renderable(const Renderable& renderable)
 {
     RenderableID id = RenderableID(renderables.add(renderable));
     return id;
 }
 
-void gfx::RenderingSystem::remove_renderable(RenderableID id)
+void core::LowLevelRenderer::remove_renderable(RenderableID id)
 {
-    if (renderables.has(id))
-    {
-        renderables.remove(id);
-    }
-    else
+#ifdef _DEBUG
+    if (!renderables.has(id))
     {
         throw std::runtime_error("gfx::RenderingSystem::remove_renderable() failed. No renderable with that ID exists.");
     }
+#endif
+
+    renderables.remove(id);
 }
 
-gfx::Renderable& gfx::RenderingSystem::get_renderable(RenderableID id)
+core::Renderable& core::LowLevelRenderer::get_renderable(RenderableID id)
 {
     if (renderables.has(id))
     {
@@ -41,22 +41,14 @@ gfx::Renderable& gfx::RenderingSystem::get_renderable(RenderableID id)
     }
 }
 
-void gfx::RenderingSystem::render()
+void core::LowLevelRenderer::render()
 {
     for (Renderable& renderable : renderables.get_dense())
     {
         glm::mat4 view_matrix = glm::mat4(1.0f);
 
-        if (std::holds_alternative<phys::StaticID>(renderable.physics_id))
-        {
-            glm::vec3& position = physics_system->get_static(std::get<phys::StaticID>(renderable.physics_id)).position;
-            view_matrix = glm::translate(view_matrix, position);
-        }
-        else
-        {
-            glm::vec3& position = physics_system->get_dynamic(std::get<phys::DynamicID>(renderable.physics_id)).position;
-            view_matrix = glm::translate(view_matrix, position);
-        }
+        glm::vec3& position = physics_system->get_particle(renderable.physics_id).position;
+        view_matrix = glm::translate(view_matrix, position);
 
         Mesh& mesh = mesh_registry->get_mesh(renderable.mesh_id);
 

@@ -3,7 +3,7 @@
 #include <glm/glm.hpp>
 #include <stdexcept>
 
-namespace gfx
+namespace core
 {
 
 struct MeshID

@@ -12,7 +12,7 @@
 
 
 
-namespace gfx
+namespace core
 {
 
 std::string read_file(const char* filepath);

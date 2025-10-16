@@ -1,13 +1,13 @@
 #include "MeshRegistry.hpp"
     
-gfx::MeshID gfx::MeshRegistry::add_mesh(Mesh mesh)
+core::MeshID core::MeshRegistry::add_mesh(Mesh mesh)
 {
     // TODO: verify that all mesh values are valid. 
     MeshID id = MeshID(meshes.add(mesh));
     return id;
 }
 
-void gfx::MeshRegistry::remove_mesh(MeshID id)
+void core::MeshRegistry::remove_mesh(MeshID id)
 {
     if (meshes.has(id))
     {
@@ -19,7 +19,7 @@ void gfx::MeshRegistry::remove_mesh(MeshID id)
     }
 }
 
-gfx::Mesh& gfx::MeshRegistry::get_mesh(MeshID id)
+core::Mesh& core::MeshRegistry::get_mesh(MeshID id)
 {
     if (meshes.has(id))
     {

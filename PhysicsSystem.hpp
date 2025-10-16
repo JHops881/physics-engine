@@ -10,20 +10,10 @@
 #include <glm/glm.hpp>
 
 
-namespace phys
+namespace core
 {
 
-struct StaticID
-{
-    uint32_t value;
-    // Allows use like a uint32_t
-    operator uint32_t() const
-    {
-        return value;
-    }
-};
-
-struct DynamicID
+struct ParticleID
 {
     uint32_t value;
     // Allows use like a uint32_t
@@ -33,55 +23,39 @@ struct DynamicID
     }
 };
 
-struct DynamicObject
+struct Particle
 {
     glm::vec3 position;
     glm::vec3 velocity;
-    glm::vec3 force;
-    float     mass;
-};
+    glm::vec3 acceleration;
+    glm::vec3 f_gravity;
+    // Represents the effect spacial dampening like drag have on the object.
+    // Is a percentage of how much velocity is conserved each second. 
+    float     dampening;
+    /*
+    because acceleration = 1/mass * force, and our physics engine applies forces to objects,
+    then we can skip finding the inverse. Also, this allows us to represent infinte mass 
+    for immovable objects.
+    */
+    float     inverse_mass;
 
-struct StaticObject
-{
-    glm::vec3 position;
-};
-
-struct CollisionEvent
-{
-    DynamicID colliding_id;
-    bool      is_x_plane;
-    bool      is_y_plane;
-    bool      is_z_plane;
 };
 
 class PhysicsSystem
 {
     private:
-    SparseSet<DynamicObject> dynamic_objects;
-    SparseSet<StaticObject>  static_objects;
-
-    glm::vec3                gravity          = glm::vec3(0.0f, -9.806f, 0.0f);
+    SparseSet<Particle> particles;
 
     public:
-    StaticObject& get_static(StaticID id);
-        
-    DynamicObject& get_dynamic(DynamicID id);
+    Particle& get_particle(ParticleID id);
 
-    StaticID add_static(const glm::vec3& pos);
+    ParticleID add_particle(const glm::vec3& pos);
 
-    DynamicID add_dynamic(const glm::vec3& pos, const glm::vec3& vel, const glm::vec3& f, float m);
-
-    void remove_static(StaticID id);
-
-    void remove_dynamic(DynamicID id);
-
-    const glm::vec3 get_overlap(const glm::vec3& pos1, const glm::vec3 pos2, float half_width) const;
-
-    const bool are_colliding(phys::DynamicObject& a, phys::StaticObject b) const;
+    void remove_particle(ParticleID id);
 
     void step(float delta_time);
 
-    void debug_objects();
+    void debug_particles();
 };
 
 }

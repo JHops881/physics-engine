@@ -6,10 +6,10 @@
 
 int main()
 {
-    std::shared_ptr<gfx::ShaderSystem>    shader_system    = std::make_shared<gfx::ShaderSystem>();
-    std::shared_ptr<gfx::MeshRegistry>    mesh_registry    = std::make_shared<gfx::MeshRegistry>();
-    std::shared_ptr<phys::PhysicsSystem>  physics_system   = std::make_shared<phys::PhysicsSystem>();
-    std::shared_ptr<gfx::RenderingSystem> rendering_system = std::make_shared<gfx::RenderingSystem>(mesh_registry, physics_system);
+    std::shared_ptr<core::ShaderSystem>    shader_system    = std::make_shared<core::ShaderSystem>();
+    std::shared_ptr<core::MeshRegistry>    mesh_registry    = std::make_shared<core::MeshRegistry>();
+    std::shared_ptr<core::PhysicsSystem>  physics_system   = std::make_shared<core::PhysicsSystem>();
+    std::shared_ptr<core::RenderingSystem> rendering_system = std::make_shared<core::RenderingSystem>(mesh_registry, physics_system);
 
     PhysSimApplication app(shader_system, mesh_registry, physics_system, rendering_system);
     try

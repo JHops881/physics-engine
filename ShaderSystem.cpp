@@ -1,13 +1,13 @@
 #include "ShaderSystem.hpp"
 
-std::string gfx::read_file(const char* filepath)
+std::string core::read_file(const char* filepath)
 {
     std::ifstream file(filepath);
     std::string file_contents{ std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>() };
     return file_contents;
 }
 
-uint32_t gfx::ShaderSystem::compile_shader(const char* shader_str, int shader_type)
+uint32_t core::ShaderSystem::compile_shader(const char* shader_str, int shader_type)
 {
     uint32_t shader_id = glCreateShader(shader_type);
     glShaderSource(shader_id, 1, &shader_str, NULL);
@@ -37,7 +37,7 @@ uint32_t gfx::ShaderSystem::compile_shader(const char* shader_str, int shader_ty
     return shader_id;
 }
 
-uint32_t gfx::ShaderSystem::create_shader_program(const char* vertex_shader_source, const char* fragment_shader_source)
+uint32_t core::ShaderSystem::create_shader_program(const char* vertex_shader_source, const char* fragment_shader_source)
 {
     std::string  vertex_shader_str = read_file(vertex_shader_source);
     std::string  fragment_shader_str = read_file(fragment_shader_source);

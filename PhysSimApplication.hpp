@@ -1,7 +1,7 @@
 #pragma once
 #include "MeshRegistry.hpp"
 #include "PhysicsSystem.hpp"
-#include "RenderingSystem.hpp"
+#include "LowLevelRenderer.hpp"
 #include "ShaderSystem.hpp"
 
 #include <chrono>
@@ -35,11 +35,11 @@ static void frame_buffer_size_callback(GLFWwindow* window, int width, int height
 class PhysSimApplication
 {
   private:
-    GLFWwindow*                           window;
-    std::shared_ptr<gfx::ShaderSystem>    shader_system;
-    std::shared_ptr<gfx::MeshRegistry>    mesh_registry;
-    std::shared_ptr<phys::PhysicsSystem>  physics_system;
-    std::shared_ptr<gfx::RenderingSystem> rendering_system;
+    GLFWwindow*                             window;
+    std::shared_ptr<core::ShaderSystem>     shader_system;
+    std::shared_ptr<core::MeshRegistry>     mesh_registry;
+    std::shared_ptr<core::PhysicsSystem>    physics_system;
+    std::shared_ptr<core::LowLevelRenderer> rendering_system;
     
     /// <summary>
     /// Handle keyboard and mouse input within the glfw window--call each frame.
@@ -70,10 +70,10 @@ class PhysSimApplication
   public:
     PhysSimApplication
     (
-        std::shared_ptr<gfx::ShaderSystem>    shader_system,
-        std::shared_ptr<gfx::MeshRegistry>    mesh_registry,
-        std::shared_ptr<phys::PhysicsSystem>  physics_system,
-        std::shared_ptr<gfx::RenderingSystem> rendering_system
+        std::shared_ptr<core::ShaderSystem>     shader_system,
+        std::shared_ptr<core::MeshRegistry>     mesh_registry,
+        std::shared_ptr<core::PhysicsSystem>    physics_system,
+        std::shared_ptr<core::LowLevelRenderer> rendering_system
     );
 
     /// <summary>

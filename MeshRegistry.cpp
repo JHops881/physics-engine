@@ -9,24 +9,24 @@ core::MeshID core::MeshRegistry::add_mesh(Mesh mesh)
 
 void core::MeshRegistry::remove_mesh(MeshID id)
 {
-    if (meshes.has(id))
-    {
-        meshes.remove(id);
-    }
-    else
+#ifdef _DEBUG
+    if (!meshes.has(id))
     {
         throw std::runtime_error("gfx::MeshRegistry::remove_mesh() failed. No mesh with this MeshID exists to remove!");
     }
+#endif
+
+    meshes.remove(id);
 }
 
 core::Mesh& core::MeshRegistry::get_mesh(MeshID id)
 {
-    if (meshes.has(id))
-    {
-        return meshes.get(id);
-    }
-    else
+#ifdef _DEBUG
+    if (!meshes.has(id))
     {
         throw std::runtime_error("gfx::MeshRegistry::get_mesh() failed. No mesh with this MeshID exists to get!");
     }
+#endif
+
+    return meshes.get(id);
 }  

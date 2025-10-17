@@ -109,7 +109,7 @@ void PhysSimApplication::init_objects()
 
     core::MeshID       mesh_id = mesh_registry->add_mesh({ vbo, vao, ebo, shader_program });
 
-    core::ParticleID  ap = physics_system->add_particle(glm::vec3(-3.0f, 2.0f, -16.5f));
+    core::PointMassID  ap = physics_system->add_point_mass(glm::vec3(-3.0f, 5.0f, -16.5f));
     core::RenderableID ar = rendering_system->new_renderable({mesh_id, ap});
 }
 
@@ -121,7 +121,7 @@ void PhysSimApplication::init()
 
 void PhysSimApplication::main_loop()
 {
-    auto last_update_time = std::chrono::duration<double>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+    auto last_update_time = std::chrono::high_resolution_clock::now();
     const double tick_rate = 60.0; // in updates/sec
     const double tick_duration = 1.0 / tick_rate; // 1 second / ticks per second = length of a tick
     double accumulator = 0;
@@ -131,16 +131,14 @@ void PhysSimApplication::main_loop()
     {
         process_input();
 
-        double now_time = std::chrono::duration<double>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
-        double delta_time = now_time - last_update_time;
-        last_update_time += delta_time;
+        auto now_time = std::chrono::high_resolution_clock::now();
+        double delta_time = std::chrono::duration<double>(now_time - last_update_time).count();
+        last_update_time += now_time - last_update_time; // += delta_time but not converted
         accumulator += delta_time;
 
         while (accumulator > tick_duration)
         {
             physics_system->step(tick_duration);
-
-            physics_system->debug_particles();
 
             accumulator -= tick_duration;
         }

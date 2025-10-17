@@ -27,7 +27,7 @@ struct RenderableID
 struct Renderable
 {
     MeshID           mesh_id;
-    core::ParticleID physics_id;
+    core::PointMassID physics_id;
 };
 
 /// <summary>

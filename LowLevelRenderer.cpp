@@ -47,7 +47,7 @@ void core::LowLevelRenderer::render()
     {
         glm::mat4 view_matrix = glm::mat4(1.0f);
 
-        glm::vec3& position = physics_system->get_particle(renderable.physics_id).position;
+        glm::vec3& position = physics_system->get_point_mass(renderable.physics_id).position;
         view_matrix = glm::translate(view_matrix, position);
 
         Mesh& mesh = mesh_registry->get_mesh(renderable.mesh_id);

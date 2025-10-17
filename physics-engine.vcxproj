@@ -149,6 +149,7 @@
     <ClCompile Include="LowLevelRenderer.hpp" />
     <ClCompile Include="ShaderSystem.cpp" />
     <ClCompile Include="SparseSet.hpp" />
+    <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MeshRegistry.hpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="PhysSimApplication.hpp" />
     <ClInclude Include="ResourceManager.hpp" />
     <ClInclude Include="ShaderSystem.hpp" />
+    <ClInclude Include="utils.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\shader.frag" />

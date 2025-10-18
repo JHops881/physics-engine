@@ -107,10 +107,19 @@ void PhysSimApplication::init_objects()
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glEnable(GL_DEPTH_TEST);
 
-    core::MeshID       mesh_id = mesh_registry->add_mesh({ vbo, vao, ebo, shader_program });
+    core::MeshID       mesh_id = mesh_registry->add_mesh({ vbo, vao, ebo });
 
-    core::PointMassID  ap = physics_system->add_point_mass(glm::vec3(-3.0f, 5.0f, -16.5f));
-    core::RenderableID ar = rendering_system->new_renderable({mesh_id, ap});
+    core::Model model
+    {
+        mesh_id,
+        {shader_program, 4}
+    };
+
+    core::ModelID      model_id = model_registry->add_model(model);
+
+    core::PointMassID  pm_id = physics_system->add_point_mass(glm::vec3(0.0f, 0.0f, 0.0f));
+
+    core::WorldObjectID wo_id = world->add_object({model_id, pm_id});
 }
 
 void PhysSimApplication::init()
@@ -121,6 +130,10 @@ void PhysSimApplication::init()
 
 void PhysSimApplication::main_loop()
 {
+    // TODO: this needs to be moved out of here.
+    core::CameraID camera_id = low_lvl_renderer->add_camera(glm::vec3(0.0f, 0.0f, 10.0f));
+    core::Camera& camera = low_lvl_renderer->get_camera(camera_id);
+
     auto last_update_time = std::chrono::high_resolution_clock::now();
     const double tick_rate = 60.0; // in updates/sec
     const double tick_duration = 1.0 / tick_rate; // 1 second / ticks per second = length of a tick
@@ -147,7 +160,7 @@ void PhysSimApplication::main_loop()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        rendering_system->render();
+        rendering_engine->render(camera);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -162,16 +175,22 @@ void PhysSimApplication::cleanup()
 
 PhysSimApplication::PhysSimApplication
 (
-    std::shared_ptr<core::ShaderSystem>    shader_system,
-    std::shared_ptr<core::MeshRegistry>    mesh_registry,
-    std::shared_ptr<core::PhysicsSystem>  physics_system,
-    std::shared_ptr<core::LowLevelRenderer> rendering_system
+    std::shared_ptr<core::ShaderSystem>     shader_system,
+    std::shared_ptr<core::MeshRegistry>     mesh_registry,
+    std::shared_ptr<core::PhysicsSystem>    physics_system,
+    std::shared_ptr<core::LowLevelRenderer> low_lvl_renderer,
+    std::shared_ptr<core::ModelRegistry>    model_registry,
+    std::shared_ptr<core::World>            world,
+    std::shared_ptr<core::RenderingEngine>  rendering_engine
 )
     :
     shader_system(std::move(shader_system)),
     mesh_registry(std::move(mesh_registry)),
     physics_system(std::move(physics_system)),
-    rendering_system(std::move(rendering_system))
+    low_lvl_renderer(std::move(low_lvl_renderer)),
+    model_registry(std::move(model_registry)),
+    world(std::move(world)),
+    rendering_engine(std::move(rendering_engine))
 {
 }
 

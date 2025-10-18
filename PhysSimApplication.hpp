@@ -3,6 +3,9 @@
 #include "PhysicsSystem.hpp"
 #include "LowLevelRenderer.hpp"
 #include "ShaderSystem.hpp"
+#include "ModelRegistry.hpp"
+#include "World.hpp"
+#include "RenderingEngine.hpp"
 
 #include <chrono>
 #include <format>
@@ -39,15 +42,25 @@ class PhysSimApplication
     std::shared_ptr<core::ShaderSystem>     shader_system;
     std::shared_ptr<core::MeshRegistry>     mesh_registry;
     std::shared_ptr<core::PhysicsSystem>    physics_system;
-    std::shared_ptr<core::LowLevelRenderer> rendering_system;
+    std::shared_ptr<core::LowLevelRenderer> low_lvl_renderer;
+    std::shared_ptr<core::ModelRegistry>    model_registry;
+    std::shared_ptr<core::World>            world;
+    std::shared_ptr<core::RenderingEngine>  rendering_engine;
+
     
     /// <summary>
     /// Handle keyboard and mouse input within the glfw window--call each frame.
     /// </summary>
     void process_input();
 
+    /// <summary>
+    /// Initialize GLFW.
+    /// </summary>
     void init_glfw();
 
+    /// <summary>
+    /// Initialize simulated objects.
+    /// </summary>
     void init_objects();
 
     /// <summary>
@@ -58,26 +71,32 @@ class PhysSimApplication
     void init();
 
     /// <summary>
-    /// Execute the applications main loop
+    /// Execute the application's main loop while it is running.
     /// </summary>
     void main_loop();
 
     /// <summary>
-    /// Clean up application resources after exiting
+    /// Clean up application resources after exiting.
     /// </summary>
     void cleanup();
 
   public:
+    /// 
+    /// Create a new Physics Simulation Application.
+    // fix documentation
     PhysSimApplication
     (
         std::shared_ptr<core::ShaderSystem>     shader_system,
         std::shared_ptr<core::MeshRegistry>     mesh_registry,
         std::shared_ptr<core::PhysicsSystem>    physics_system,
-        std::shared_ptr<core::LowLevelRenderer> rendering_system
+        std::shared_ptr<core::LowLevelRenderer> low_lvl_renderer,
+        std::shared_ptr<core::ModelRegistry>    model_registry,
+        std::shared_ptr<core::World>            world,
+        std::shared_ptr<core::RenderingEngine>  rendering_engine
     );
 
     /// <summary>
-    /// Start & run the application until termination
+    /// Start & run the application until termination.
     /// </summary>
     void run();
 };

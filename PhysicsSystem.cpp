@@ -36,7 +36,7 @@ void core::PhysicsSystem::remove_point_mass(PointMassID id)
 {
 #ifdef _DEBUG
     utils::time_and_name_log(__FUNCTION__);
-    std::cout << "id: " << id << std::endl;
+    std::cout << "id=" << id << std::endl;
 
     if (!particles.has(id))
     {

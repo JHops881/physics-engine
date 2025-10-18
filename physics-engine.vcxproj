@@ -142,22 +142,28 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ModelRegistry.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="PhysSimApplication.cpp" />
     <ClCompile Include="MeshRegistry.cpp" />
     <ClCompile Include="LowLevelRenderer.cpp" />
     <ClCompile Include="LowLevelRenderer.hpp" />
+    <ClCompile Include="RenderingEngine.cpp" />
     <ClCompile Include="ShaderSystem.cpp" />
     <ClCompile Include="SparseSet.hpp" />
     <ClCompile Include="utils.cpp" />
+    <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MeshRegistry.hpp" />
+    <ClInclude Include="ModelRegistry.hpp" />
     <ClInclude Include="PhysicsSystem.hpp" />
     <ClInclude Include="PhysSimApplication.hpp" />
+    <ClInclude Include="RenderingEngine.hpp" />
     <ClInclude Include="ResourceManager.hpp" />
     <ClInclude Include="ShaderSystem.hpp" />
     <ClInclude Include="utils.hpp" />
+    <ClInclude Include="World.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\shader.frag" />

@@ -20,7 +20,6 @@ struct Mesh {
     uint32_t vbo;
     uint32_t vao;
     uint32_t ebo;
-    uint32_t shader;
 };
 
 class MeshRegistry

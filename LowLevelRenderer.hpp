@@ -2,6 +2,7 @@
 #include "MeshRegistry.hpp"
 #include "SparseSet.hpp"
 #include "PhysicsSystem.hpp"
+#include "ModelRegistry.hpp"
 
 #include <variant>
 #include <memory>
@@ -14,20 +15,34 @@
 namespace core
 {
 
-struct RenderableID
+/// <summary>
+/// A camera that is a point of view within the rendered world.
+/// </summary>
+struct Camera
+{
+    glm::vec3 position;
+    glm::vec3 target;
+    glm::vec3 reverse_direction;
+    glm::vec3 up;
+    glm::vec3 right;
+
+    float near_clip_plane;
+    float far_clip_plane;
+    float aspect_ratio;
+    float fov;
+};
+
+/// <summary>
+/// An ID for a camera.
+/// </summary>
+struct CameraID
 {
     uint32_t value;
     // Allows use like a uint32_t
     operator uint32_t() const
     {
-         return value;
+        return value;
     }
-};
-
-struct Renderable
-{
-    MeshID           mesh_id;
-    core::PointMassID physics_id;
 };
 
 /// <summary>
@@ -41,28 +56,48 @@ struct Renderable
 class LowLevelRenderer
 {
   private:
-    std::shared_ptr<MeshRegistry>        mesh_registry;
-    std::shared_ptr<core::PhysicsSystem> physics_system;
-    SparseSet<Renderable>                renderables;
-
-    float near_clip_plane = 0.1f;
-    float far_clip_plane  = 100.0f;
-    float aspect_ratio    = 16.0f / 9.0f;
-    float fov             = glm::radians(72.0f); // always in radians
-
-    glm::mat4 model_matrix      = glm::mat4(1.0f);
-    glm::mat4 projection_matrix = glm::perspective(fov, aspect_ratio, near_clip_plane, far_clip_plane);
+    std::shared_ptr<MeshRegistry>  mesh_registry;
+    std::shared_ptr<PhysicsSystem> physics_system;
+    SparseSet<Camera>              cameras;   
 
   public:
-    LowLevelRenderer(std::shared_ptr<MeshRegistry> mesh_registry, std::shared_ptr<core::PhysicsSystem> physics_system);
 
-    RenderableID new_renderable(const Renderable& renderable);
+    /// <summary>
+    /// Create a new Low Level Renderer.
+    /// </summary>
+    /// <param name="mesh_registry">: Mesh Registry</param>
+    /// <param name="physics_system">: Physics System</param>
+    LowLevelRenderer(std::shared_ptr<MeshRegistry> mesh_registry, std::shared_ptr<PhysicsSystem> physics_system);
 
-    void remove_renderable(RenderableID id);
-    
-    Renderable& get_renderable(RenderableID id);
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="mesh"></param>
+    /// <param name="position"></param>
+    /// <param name="material"></param>
+    /// <param name="camera"></param>
+    void draw_geometry(const Mesh& mesh, const glm::vec3& position, const Material& material, const Camera& camera);
 
-    void render();
+    /// <summary>
+    /// Add a camera.
+    /// </summary>
+    /// <param name="position">: initial position of the camera in 3D world space</param>
+    /// <param name="up">: The direction that the top of the camera is facing</param>
+    /// <returns>The ID of the camera</returns>
+    CameraID add_camera(const glm::vec3& position, const glm::vec3& up = glm::vec3(0.0f, 1.0f, 0.0f));
+
+    /// <summary>
+    /// Get a camera.
+    /// </summary>
+    /// <param name="id">: the ID of the camera</param>
+    /// <returns>A reference to the camera</returns>
+    Camera& get_camera(const CameraID id);
+
+    /// <summary>
+    /// Remove a camera.
+    /// </summary>
+    /// <param name="id">: the ID of the camera that you want to remove</param>
+    void remove_camera(const CameraID id);
 
 };
 

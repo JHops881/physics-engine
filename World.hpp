@@ -4,41 +4,29 @@
 #include "PhysicsSystem.hpp"
 #include "ModelRegistry.hpp"
 #include "utils.hpp"
+#include "ID.hpp"
 
-namespace core
-{
+namespace core {
 
 /// <summary>
 /// An object that exists in the simulated world.
 /// </summary>
-struct WorldObject
-{
+struct WorldObject {
     ModelID model_id;
     PointMassID pm_id;
 };
 
-/// <summary>
-/// An ID for an object in the world.
-/// </summary>
-struct WorldObjectID
-{
-    uint32_t value;
-    // Allows use like a uint32_t
-    operator uint32_t() const
-    {
-        return value;
-    }
+struct WorldObjectID : public core::ID<WorldObjectID> {
+    using core::ID<WorldObjectID>::ID;
 };
 
 /// <summary>
 /// Simulated world that describes the scene.
 /// </summary>
-class World
-{
-  private:
+class World {
+private:
     SparseSet<WorldObject> objects;   
-
-  public:
+public:
     /// <summary>
     /// Add a new object into the world.
     /// </summary>

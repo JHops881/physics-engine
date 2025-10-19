@@ -1,32 +1,25 @@
 #include "MeshRegistry.hpp"
     
-core::MeshID core::MeshRegistry::add_mesh(Mesh mesh)
-{
+core::MeshID core::MeshRegistry::add_mesh(Mesh mesh) {
     // TODO: verify that all mesh values are valid. 
     MeshID id = MeshID(meshes.add(mesh));
     return id;
 }
 
-void core::MeshRegistry::remove_mesh(MeshID id)
-{
+void core::MeshRegistry::remove_mesh(MeshID id) {
 #ifdef _DEBUG
-    if (!meshes.has(id))
-    {
+    if (!meshes.has(id)) {
         throw std::runtime_error("gfx::MeshRegistry::remove_mesh() failed. No mesh with this MeshID exists to remove!");
     }
 #endif
-
     meshes.remove(id);
 }
 
-core::Mesh& core::MeshRegistry::get_mesh(MeshID id)
-{
+core::Mesh& core::MeshRegistry::get_mesh(MeshID id) {
 #ifdef _DEBUG
-    if (!meshes.has(id))
-    {
+    if (!meshes.has(id)) {
         throw std::runtime_error("gfx::MeshRegistry::get_mesh() failed. No mesh with this MeshID exists to get!");
     }
 #endif
-
     return meshes.get(id);
 }  

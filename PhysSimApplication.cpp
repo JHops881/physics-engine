@@ -1,20 +1,16 @@
 #include "PhysSimApplication.hpp"
 
-void frame_buffer_size_callback(GLFWwindow* window, int width, int height)
-{
+void frame_buffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
-void PhysSimApplication::process_input()
-{
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-    {
+void PhysSimApplication::process_input() {
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
     }
 }
 
-void PhysSimApplication::init_glfw()
-{
+void PhysSimApplication::init_glfw() {
     // Instantiate the GLFW window.
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -41,11 +37,10 @@ void PhysSimApplication::init_glfw()
     glfwSetFramebufferSizeCallback(window, frame_buffer_size_callback);
 }
 
-void PhysSimApplication::init_objects()
-{
+void PhysSimApplication::init_objects() {
     // Having fun with shapes!
-    float vertices[]
-    {  // positions        // colors
+    float vertices[] { 
+       // positions        // colors
        0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f, //0
        0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f, //1
        0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, //2
@@ -56,8 +51,7 @@ void PhysSimApplication::init_objects()
       -0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 0.0f, //7
     };
 
-    unsigned int indices[]
-    {
+    unsigned int indices[] {
       3, 2, 1,
       1, 4, 3,
 
@@ -107,32 +101,22 @@ void PhysSimApplication::init_objects()
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glEnable(GL_DEPTH_TEST);
 
-    core::MeshID       mesh_id = mesh_registry->add_mesh({ vbo, vao, ebo });
-
-    core::Model model
-    {
-        mesh_id,
-        {shader_program, 4}
-    };
-
-    core::ModelID      model_id = model_registry->add_model(model);
-
-    core::PointMassID  pm_id = physics_system->add_point_mass(glm::vec3(0.0f, 0.0f, 0.0f));
-
-    core::WorldObjectID wo_id = world->add_object({model_id, pm_id});
+    core::MeshID        mesh_id  = mesh_registry->add_mesh({ vbo, vao, ebo });
+    core::Model         model    = core::Model(mesh_id, { shader_program, 4 } );
+    core::ModelID       model_id = model_registry->add_model(model);
+    core::PointMassID   pm_id    = physics_system->add_point_mass(glm::vec3(0.0f, 0.0f, 0.0f));
+    core::WorldObjectID wo_id    = world->add_object({model_id, pm_id});
 }
 
-void PhysSimApplication::init()
-{
+void PhysSimApplication::init() {
     init_glfw();
     init_objects();
 }
 
-void PhysSimApplication::main_loop()
-{
+void PhysSimApplication::main_loop() {
     // TODO: this needs to be moved out of here.
-    core::CameraID camera_id = low_lvl_renderer->add_camera(glm::vec3(0.0f, 0.0f, 10.0f));
-    core::Camera& camera = low_lvl_renderer->get_camera(camera_id);
+    core::Camera   camera    = core::Camera(glm::vec3(0.0f, 0.0f, 10.0f));
+    core::CameraID camera_id = core::CameraID(1);
 
     auto last_update_time = std::chrono::high_resolution_clock::now();
     const double tick_rate = 60.0; // in updates/sec
@@ -140,8 +124,7 @@ void PhysSimApplication::main_loop()
     double accumulator = 0;
 
     // Application loop
-    while (!glfwWindowShouldClose(window))
-    {
+    while (!glfwWindowShouldClose(window)) {
         process_input();
 
         auto now_time = std::chrono::high_resolution_clock::now();
@@ -149,10 +132,8 @@ void PhysSimApplication::main_loop()
         last_update_time += now_time - last_update_time; // += delta_time but not converted
         accumulator += delta_time;
 
-        while (accumulator > tick_duration)
-        {
+        while (accumulator > tick_duration) {
             physics_system->step(tick_duration);
-
             accumulator -= tick_duration;
         }
 
@@ -167,35 +148,30 @@ void PhysSimApplication::main_loop()
     }
 }
 
-void PhysSimApplication::cleanup()
-{
+void PhysSimApplication::cleanup() {
     glfwDestroyWindow(window);
     glfwTerminate();
 }
 
-PhysSimApplication::PhysSimApplication
-(
+PhysSimApplication::PhysSimApplication(
     std::shared_ptr<core::ShaderSystem>     shader_system,
     std::shared_ptr<core::MeshRegistry>     mesh_registry,
     std::shared_ptr<core::PhysicsSystem>    physics_system,
     std::shared_ptr<core::LowLevelRenderer> low_lvl_renderer,
     std::shared_ptr<core::ModelRegistry>    model_registry,
     std::shared_ptr<core::World>            world,
-    std::shared_ptr<core::RenderingEngine>  rendering_engine
-)
-    :
-    shader_system(std::move(shader_system)),
-    mesh_registry(std::move(mesh_registry)),
-    physics_system(std::move(physics_system)),
-    low_lvl_renderer(std::move(low_lvl_renderer)),
-    model_registry(std::move(model_registry)),
-    world(std::move(world)),
-    rendering_engine(std::move(rendering_engine))
+    std::shared_ptr<core::RenderingEngine>  rendering_engine)
+    : shader_system(std::move(shader_system)),
+      mesh_registry(std::move(mesh_registry)),
+      physics_system(std::move(physics_system)),
+      low_lvl_renderer(std::move(low_lvl_renderer)),
+      model_registry(std::move(model_registry)),
+      world(std::move(world)),
+      rendering_engine(std::move(rendering_engine))
 {
 }
 
-void PhysSimApplication::run()
-{
+void PhysSimApplication::run() {
     init();
     main_loop();
     cleanup();

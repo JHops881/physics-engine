@@ -1,14 +1,12 @@
 #include "ModelRegistry.hpp"
 
-core::ModelID core::ModelRegistry::add_model(Model model)
-{
+core::ModelID core::ModelRegistry::add_model(Model model) {
     // TODO: verify that all model values are valid. 
     ModelID id = ModelID(models.add(model));
     return id;
 }
 
-void core::ModelRegistry::remove_model(ModelID id)
-{
+void core::ModelRegistry::remove_model(ModelID id) {
 #ifdef _DEBUG
     if (!models.has(id))
     {

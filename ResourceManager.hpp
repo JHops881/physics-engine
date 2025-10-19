@@ -1,15 +1,10 @@
 #pragma once
 
-namespace core
-{
+namespace core {
 
-class ResourceManager
-{
-  private:
-    
-  public:
-    
-
+class ResourceManager {
+private:
+public:
 };
 
 }

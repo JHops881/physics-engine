@@ -1,42 +1,31 @@
 #pragma once
 #include "SparseSet.hpp"
 #include "MeshRegistry.hpp"
+#include "ID.hpp"
 
 #include <glm/glm.hpp>
 #include <stdexcept>
 
-namespace core
-{
+namespace core {
 
-struct Material // TODO: a material is a shaderID and a textureID.
-{
+struct Material { // TODO: a material is a shaderID and a textureID.
     uint32_t shader_id;
     uint32_t placeholder;
 };
 
-struct Model
-{
+struct Model {
     MeshID mesh_id;
     Material material; // TODO: actually, this needs to be a MaterialID.
 };
 
-struct ModelID
-{
-    uint32_t value;
-    // Allows use like a uint32_t
-    operator uint32_t() const
-    {
-        return value;
-    }
+struct ModelID : public core::ID<ModelID> {
+    using core::ID<ModelID>::ID;
 };
 
-class ModelRegistry
-{
+class ModelRegistry {
 private:
     SparseSet<Model> models{};
-
 public:
-
     ModelID add_model(Model model);
 
     void remove_model(ModelID id);

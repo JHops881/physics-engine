@@ -1,26 +1,21 @@
 #include "PhysicsSystem.hpp"
 
-core::PointMass& core::PhysicsSystem::get_point_mass(PointMassID id)
-{
+core::PointMass& core::PhysicsSystem::get_point_mass(PointMassID id) {
 #ifdef _DEBUG
-    if (!particles.has(id))
-    {
-        throw std::runtime_error("phys::PhysicsSystem::get_particle() failed. Given DynamicID does not refer to an existing dynamic object.");
+    if (!point_masses.has(id)) {
+        throw std::runtime_error("core::PhysicsSystem::get_point_mass() failed. PointMassID doesn't exist.");
     }
 #endif
-
-    return particles.get(id);
+    return point_masses.get(id);
 }
 
-core::PointMassID core::PhysicsSystem::add_point_mass(const glm::vec3& pos)
-{
+core::PointMassID core::PhysicsSystem::add_point_mass(const glm::vec3& pos) {
 #ifdef _DEBUG
     utils::time_and_name_log(__FUNCTION__);
-    std::cout << std::format("pos=glm::vec3({}, {}, {}).", pos.x, pos.y, pos.z) << std::endl;
+    utils::print_vec3(pos, "pos");
 #endif
     // defualt particle values
-    core::PointMass particle
-    {
+    core::PointMass point_mass {
         pos,
         glm::vec3(0.0f),
         glm::vec3(0.0f),
@@ -28,44 +23,35 @@ core::PointMassID core::PhysicsSystem::add_point_mass(const glm::vec3& pos)
         0.995,
         1.0f
     };
-    PointMassID id = PointMassID(particles.add(particle));
+    PointMassID id = PointMassID(point_masses.add(point_mass));
     return id;
 }
 
-void core::PhysicsSystem::remove_point_mass(PointMassID id)
-{
+void core::PhysicsSystem::remove_point_mass(PointMassID id) {
 #ifdef _DEBUG
     utils::time_and_name_log(__FUNCTION__);
     std::cout << "id=" << id << std::endl;
-
-    if (!particles.has(id))
-    {
-        throw std::runtime_error("phys::PhysicsSystem::remove_particle() failed. Given DynamicID does not refer to an existing dynamic object.");
+    if (!point_masses.has(id)) {
+        throw std::runtime_error("core::PhysicsSystem::remove_point_mass() failed. PointMassID doesn't exist.");
     }
 #endif
-
-    particles.remove(id);
+    point_masses.remove(id);
 }
 
-void core::PhysicsSystem::step(float delta_time)
+void core::PhysicsSystem::step(float delta_time) {
 // Let's cook this bad boy up with CUDA to accelerate the computing
-{
 #ifdef _DEBUG
     utils::time_and_name_log(__FUNCTION__);
     std::cout << "delta_time=" << delta_time << std::endl;
-
     auto start_time = std::chrono::high_resolution_clock::now();
 #endif
-    
-    for (PointMass& p : particles.get_dense())
-    {
+    for (PointMass& p : point_masses.get_dense()) {
         p.acceleration = p.inverse_mass * p.f_gravity;
         p.velocity += p.acceleration * delta_time;
 
         // p' = p + vt + 1/2at^2
         p.position = p.position + p.velocity * p.dampening * delta_time + p.acceleration * delta_time * delta_time * 0.5f;
     }
-
 #ifdef _DEBUG
     auto end_time = std::chrono::high_resolution_clock::now();
     double duration = std::chrono::duration<double>(end_time - start_time).count();
@@ -74,22 +60,14 @@ void core::PhysicsSystem::step(float delta_time)
 #endif
 }
 
-void core::PhysicsSystem::debug_point_masses()
-{
+void core::PhysicsSystem::debug_point_masses() {
     std::cout << "Alive PointMasses: " << std::endl;
     size_t i = 0;
-    for (auto& p : particles.get_dense())
-    {
-        PointMassID id = PointMassID(particles.get_associated_handle(i));
+    for (auto& p : point_masses.get_dense()) {
+        PointMassID id = PointMassID(point_masses.get_associated_handle(i));
         std::cout << "PointMassID: " << std::to_string(id) << std::endl;
-
-        std::string message1 = std::format("Position: ({}, {}, {})", p.position.x, p.position.y, p.position.z);
-        std::cout << message1 << std::endl;
-
-        std::string message2 = std::format("Velocity: ({}, {}, {})m/s",
-            p.velocity.x, p.velocity.y, p.velocity.z);
-        std::cout << message2 << std::endl;
-
+        utils::print_vec3(p.position, "Position");
+        utils::print_vec3(p.velocity, "Velocity");
         i++;
     }
 }

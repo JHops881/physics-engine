@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ModelRegistry.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
@@ -155,6 +156,8 @@
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.hpp" />
+    <ClInclude Include="ID.hpp" />
     <ClInclude Include="MeshRegistry.hpp" />
     <ClInclude Include="ModelRegistry.hpp" />
     <ClInclude Include="PhysicsSystem.hpp" />

@@ -1,6 +1,7 @@
 #pragma once
 #include "SparseSet.hpp"
 #include "utils.hpp"
+#include "ID.hpp"
 
 #include <stdexcept>
 #include <iostream>
@@ -11,28 +12,20 @@
 #include <glm/glm.hpp>
 
 
-namespace core
-{
+namespace core {
 
 /// <summary>
 /// An ID for a PointMass that is used to identify it within the physics system.
 /// </summary>
-struct PointMassID
-{
-    uint32_t value;
-    // Allows use like a uint32_t
-    operator uint32_t() const
-    {
-        return value;
-    }
+struct PointMassID : public core::ID<PointMassID> {
+    using core::ID<PointMassID>::ID;
 };
 
 /// <summary>
 /// A point in 3 dimensional space that has mass and is affected by forces and the like. Building block for larger
 /// physical structures in a mass-aggregate physics system.
 /// </summary>
-struct PointMass
-{
+struct PointMass {
     glm::vec3 position;
     glm::vec3 velocity;
     glm::vec3 acceleration;
@@ -47,18 +40,15 @@ struct PointMass
     for immovable objects.
     */
     float     inverse_mass;
-
 };
 
 /// <summary>
 /// A System that computes the motion, collisions, and physical parameters of objects that exist within the simulated world. 
 /// </summary>
-class PhysicsSystem
-{
-    private:
-    SparseSet<PointMass> particles;
-
-    public:
+class PhysicsSystem {
+private:
+    SparseSet<PointMass> point_masses;
+public:
     /// <summary>
     /// Retrieve a point mass in exchange for its ID.
     /// </summary>

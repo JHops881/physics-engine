@@ -35,9 +35,8 @@ static void frame_buffer_size_callback(GLFWwindow* window, int width, int height
 /// <summary>
 /// An application running OpenGL in a GLFW window
 /// </summary>
-class PhysSimApplication
-{
-  private:
+class PhysSimApplication {
+private:
     GLFWwindow*                             window;
     std::shared_ptr<core::ShaderSystem>     shader_system;
     std::shared_ptr<core::MeshRegistry>     mesh_registry;
@@ -47,7 +46,6 @@ class PhysSimApplication
     std::shared_ptr<core::World>            world;
     std::shared_ptr<core::RenderingEngine>  rendering_engine;
 
-    
     /// <summary>
     /// Handle keyboard and mouse input within the glfw window--call each frame.
     /// </summary>
@@ -80,20 +78,18 @@ class PhysSimApplication
     /// </summary>
     void cleanup();
 
-  public:
+public:
     /// 
     /// Create a new Physics Simulation Application.
     // fix documentation
-    PhysSimApplication
-    (
+    PhysSimApplication(
         std::shared_ptr<core::ShaderSystem>     shader_system,
         std::shared_ptr<core::MeshRegistry>     mesh_registry,
         std::shared_ptr<core::PhysicsSystem>    physics_system,
         std::shared_ptr<core::LowLevelRenderer> low_lvl_renderer,
         std::shared_ptr<core::ModelRegistry>    model_registry,
         std::shared_ptr<core::World>            world,
-        std::shared_ptr<core::RenderingEngine>  rendering_engine
-    );
+        std::shared_ptr<core::RenderingEngine>  rendering_engine);
 
     /// <summary>
     /// Start & run the application until termination.

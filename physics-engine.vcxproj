@@ -150,6 +150,7 @@
     <ClCompile Include="LowLevelRenderer.cpp" />
     <ClCompile Include="LowLevelRenderer.hpp" />
     <ClCompile Include="RenderingEngine.cpp" />
+    <ClCompile Include="ServiceLocator.hpp" />
     <ClCompile Include="ShaderSystem.cpp" />
     <ClCompile Include="SparseSet.hpp" />
     <ClCompile Include="utils.cpp" />

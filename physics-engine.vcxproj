@@ -143,12 +143,11 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="ModelRegistry.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="PhysSimApplication.cpp" />
-    <ClCompile Include="MeshRegistry.cpp" />
     <ClCompile Include="LowLevelRenderer.cpp" />
-    <ClCompile Include="LowLevelRenderer.hpp" />
+    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Renderer.hpp" />
     <ClCompile Include="RenderingEngine.cpp" />
     <ClCompile Include="ServiceLocator.hpp" />
     <ClCompile Include="ShaderSystem.cpp" />
@@ -159,13 +158,17 @@
   <ItemGroup>
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="ID.hpp" />
-    <ClInclude Include="MeshRegistry.hpp" />
-    <ClInclude Include="ModelRegistry.hpp" />
+    <ClInclude Include="IRenderingEngine.hpp" />
+    <ClInclude Include="Material.hpp" />
+    <ClInclude Include="Mesh.hpp" />
+    <ClInclude Include="Model.hpp" />
     <ClInclude Include="PhysicsSystem.hpp" />
     <ClInclude Include="PhysSimApplication.hpp" />
+    <ClInclude Include="IRenderer.hpp" />
     <ClInclude Include="RenderingEngine.hpp" />
     <ClInclude Include="ResourceManager.hpp" />
     <ClInclude Include="ShaderSystem.hpp" />
+    <ClInclude Include="Texture.hpp" />
     <ClInclude Include="utils.hpp" />
     <ClInclude Include="World.hpp" />
   </ItemGroup>

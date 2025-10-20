@@ -157,7 +157,7 @@ PhysSimApplication::PhysSimApplication(
     std::shared_ptr<core::ShaderSystem>     shader_system,
     std::shared_ptr<core::MeshRegistry>     mesh_registry,
     std::shared_ptr<core::PhysicsSystem>    physics_system,
-    std::shared_ptr<core::LowLevelRenderer> low_lvl_renderer,
+    std::shared_ptr<core::Renderer> low_lvl_renderer,
     std::shared_ptr<core::ModelRegistry>    model_registry,
     std::shared_ptr<core::World>            world,
     std::shared_ptr<core::RenderingEngine>  rendering_engine)

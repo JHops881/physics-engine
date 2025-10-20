@@ -10,7 +10,7 @@ int main() {
     std::shared_ptr<core::ShaderSystem>     shader_system    = std::make_shared<core::ShaderSystem>();
     std::shared_ptr<core::MeshRegistry>     mesh_registry    = std::make_shared<core::MeshRegistry>();
     std::shared_ptr<core::PhysicsSystem>    physics_system   = std::make_shared<core::PhysicsSystem>();
-    std::shared_ptr<core::LowLevelRenderer> low_lvl_renderer = std::make_shared<core::LowLevelRenderer>(mesh_registry, physics_system);
+    std::shared_ptr<core::Renderer> low_lvl_renderer = std::make_shared<core::Renderer>(mesh_registry, physics_system);
     std::shared_ptr<core::ModelRegistry>    model_registry   = std::make_shared<core::ModelRegistry>();
     std::shared_ptr<core::World>            world            = std::make_shared<core::World>();
     std::shared_ptr<core::RenderingEngine>  rendering_engine = std::make_shared<core::RenderingEngine>(

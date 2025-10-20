@@ -1,30 +1,26 @@
 #pragma once
-#include "LowLevelRenderer.hpp"
 #include "World.hpp"
+#include "ServiceLocator.hpp"
+#include "IRenderingEngine.hpp"
+#include "IRenderer.hpp"
+#include "Model.hpp"
+#include "Mesh.hpp"
+#include "Material.hpp"
 
 #include <memory>
 
 namespace core {
 
-class RenderingEngine {
+class RenderingEngine : Service<IRenderingEngine> {
 private:
-    std::shared_ptr<LowLevelRenderer>    low_lvl_renderer;
-    std::shared_ptr<World>               world;
-    std::shared_ptr<ModelRegistry>       model_registry;
-    std::shared_ptr<MeshRegistry>        mesh_registry;
-    std::shared_ptr<core::PhysicsSystem> physics_system; 
+    std::shared_ptr<ServiceLocator> locator;
 public:
-    RenderingEngine(
-        std::shared_ptr<LowLevelRenderer>    low_lvl_renderer,
-        std::shared_ptr<World>               world,
-        std::shared_ptr<ModelRegistry>       model_registry,
-        std::shared_ptr<MeshRegistry>        mesh_registry,
-        std::shared_ptr<core::PhysicsSystem> physics_system);
+    RenderingEngine(std::shared_ptr<ServiceLocator> locator);
 
     /// <summary>
     /// Render the world from a point of view.
     /// </summary>
-    void render(const Camera& camera) const;
+    void render() const override;
 };
 
 }

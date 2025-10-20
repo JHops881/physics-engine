@@ -1,14 +1,18 @@
 #pragma once
-#include "MeshRegistry.hpp"
 #include "SparseSet.hpp"
 #include "PhysicsSystem.hpp"
-#include "ModelRegistry.hpp"
 #include "Camera.hpp"
+#include "Mesh.hpp"
+#include "Model.hpp"
+#include "Material.hpp"
+#include "IRenderer.hpp"
+#include "ServiceLocator.hpp"
 
 #include <variant>
 #include <memory>
 #include <stdexcept>
 #include <unordered_map>
+#include <map>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -24,28 +28,21 @@ namespace core {
 /// Viewports & Virutal Screens, Textures and Surface Management, Debug Drawing, Graphics Device Interface.
 /// "Game Engine Architecture" by Jason Gregory, pg 59 or part II
 /// </summary>
-class LowLevelRenderer {
+class Renderer : public Service<IRenderer> {
 private:
-    std::shared_ptr<MeshRegistry>  mesh_registry;
-    std::shared_ptr<PhysicsSystem> physics_system;
+    std::shared_ptr<ServiceLocator> locator;
 public:
-    std::unordered_map<CameraID, Camera> cameras;
+    std::map<CameraID, Camera> cameras;
+    std::map<MeshID,   Mesh>   meshes;
+    std::map<ModelID,  Model>  models;
     
     /// <summary>
     /// Create a new Low Level Renderer.
     /// </summary>
-    /// <param name="mesh_registry">: Mesh Registry</param>
-    /// <param name="physics_system">: Physics System</param>
-    LowLevelRenderer(std::shared_ptr<MeshRegistry> mesh_registry, std::shared_ptr<PhysicsSystem> physics_system);
+    /// <param name="locator"></param>
+    Renderer(std::shared_ptr<ServiceLocator> locator);
 
-    /// <summary>
-    /// Draw a primitives to the screen from a view point.
-    /// </summary>
-    /// <param name="mesh"></param>
-    /// <param name="position"></param>
-    /// <param name="material"></param>
-    /// <param name="camera"></param>
-    void draw_geometry(const Mesh& mesh, const glm::vec3& position, const Material& material, const Camera& camera);
+    void draw_geometry(const Mesh& mesh, const glm::vec3& position, const Material& material, const Camera& camera) override;
 };
 
 }

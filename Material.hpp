@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ID.hpp"
-#include "Texture.hpp"
 
 namespace core {
 

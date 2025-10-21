@@ -149,7 +149,6 @@
     <ClCompile Include="Renderer3D.cpp" />
     <ClCompile Include="Renderer3D.hpp" />
     <ClCompile Include="ServiceLocator.hpp" />
-    <ClCompile Include="ShaderSystem.cpp" />
     <ClCompile Include="SparseSet.hpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>

@@ -11,6 +11,7 @@
 #include <format>
 #include <vector>
 #include <chrono>
+#include <memory>
 
 #include <glm/glm.hpp>
 
@@ -18,17 +19,20 @@ namespace core {
 
 class PhysicsSystem : public Service<IPhysicsSystem> {
 private:
+    std::shared_ptr<ServiceLocator> locator;
     SparseSet<PointMass> point_masses;
 public:
-    PointMass& get_point_mass(PointMassID id);
+    PhysicsSystem(std::shared_ptr<ServiceLocator> locator);
 
-    PointMassID add_point_mass(const glm::vec3& pos);
+    PointMass& get_point_mass(PointMassID id) override;
 
-    void remove_point_mass(PointMassID id);
+    PointMassID add_point_mass(const glm::vec3& pos) override;
 
-    void step(float delta_time);
+    void remove_point_mass(PointMassID id) override;
 
-    void debug_point_masses();
+    void step(float delta_time) override;
+
+    void debug_point_masses() override;
 };
 
 }

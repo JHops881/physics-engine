@@ -1,5 +1,7 @@
 #include "PhysicsSystem.hpp"
 
+core::PhysicsSystem::PhysicsSystem(std::shared_ptr<ServiceLocator> locator) : locator(locator) {}
+
 core::PointMass& core::PhysicsSystem::get_point_mass(PointMassID id) {
 #ifdef _DEBUG
     if (!point_masses.has(id)) {

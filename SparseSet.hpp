@@ -80,7 +80,7 @@ public:
         free_handles.push_back(handle);
     }
 
-    uint32_t get_associated_handle(size_t dense_index) {
+    uint32_t get_associated_handle(size_t dense_index) const {
     #ifdef _DEBUG
         if (dense_index > dense.size() or dense.size() != associated_handles.size()) {
             std::string message = std::string("SparseSet::GetAssociatedHandle() failed. Dense index may be out of range.");
@@ -92,7 +92,7 @@ public:
 
     std::vector<T>& get_dense() { return dense; }
 
-    bool has(uint32_t handle) {
+    bool has(uint32_t handle) const {
         return (handle < sparse.size() and sparse[handle] != INVALID_HANDLE);
     }
 };

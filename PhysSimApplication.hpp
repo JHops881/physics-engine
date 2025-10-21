@@ -1,11 +1,7 @@
 #pragma once
-#include "MeshRegistry.hpp"
-#include "PhysicsSystem.hpp"
-#include "LowLevelRenderer.hpp"
-#include "ShaderSystem.hpp"
-#include "ModelRegistry.hpp"
-#include "World.hpp"
-#include "RenderingEngine.hpp"
+#include "ServiceLocator.hpp"
+#include "IPhysicsSystem.hpp"
+#include "IRenderer3D.hpp"
 
 #include <chrono>
 #include <format>
@@ -37,14 +33,8 @@ static void frame_buffer_size_callback(GLFWwindow* window, int width, int height
 /// </summary>
 class PhysSimApplication {
 private:
-    GLFWwindow*                             window;
-    std::shared_ptr<core::ShaderSystem>     shader_system;
-    std::shared_ptr<core::MeshRegistry>     mesh_registry;
-    std::shared_ptr<core::PhysicsSystem>    physics_system;
-    std::shared_ptr<core::Renderer> low_lvl_renderer;
-    std::shared_ptr<core::ModelRegistry>    model_registry;
-    std::shared_ptr<core::World>            world;
-    std::shared_ptr<core::RenderingEngine>  rendering_engine;
+    GLFWwindow* window;
+    std::shared_ptr<core::ServiceLocator> locator;
 
     /// <summary>
     /// Handle keyboard and mouse input within the glfw window--call each frame.
@@ -82,14 +72,7 @@ public:
     /// 
     /// Create a new Physics Simulation Application.
     // fix documentation
-    PhysSimApplication(
-        std::shared_ptr<core::ShaderSystem>     shader_system,
-        std::shared_ptr<core::MeshRegistry>     mesh_registry,
-        std::shared_ptr<core::PhysicsSystem>    physics_system,
-        std::shared_ptr<core::Renderer> low_lvl_renderer,
-        std::shared_ptr<core::ModelRegistry>    model_registry,
-        std::shared_ptr<core::World>            world,
-        std::shared_ptr<core::RenderingEngine>  rendering_engine);
+    PhysSimApplication(std::shared_ptr<core::ServiceLocator> locator);
 
     /// <summary>
     /// Start & run the application until termination.

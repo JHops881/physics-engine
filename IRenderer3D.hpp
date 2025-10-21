@@ -62,7 +62,7 @@ public:
     /// <param name="attr_count">: the total count of VAO attributes that you want.</param>
     /// <param name="sizes">: A series of int values that represent the length of each attribute in the respective order.</param>
     /// <returns>An unsigned integer that is an ID that refers to the (VAO) OpenGL object created.</returns>
-    virtual GLuint new_VAO(GLuint VBO, GLuint EBO, GLsizei attr_count, GLint sizes[]) const = 0;
+    virtual GLuint new_VAO(GLuint VBO, GLuint EBO, GLsizei attr_count, std::vector<GLint> sizes) const = 0;
 
     /// <summary>
     /// Create a new shader program.
@@ -70,7 +70,7 @@ public:
     /// <param name="vertex_shader_filepath">: The path to the vertex shader file.</param>
     /// <param name="fragment_shader_filepath">: The path to the fragment shader file.</param>
     /// <returns>An insigned integer that is an ID that refers to the shader program OpenGL object created.</returns>
-    virtual GLuint new_shader_program(const char* vertex_shader_filepath, const char* fragment_shader_filepath) const = 0;
+    virtual GLuint new_shader_program(const char* vertex_shader_filepath, const char* fragment_shader_filepath) = 0;
 
     /// <summary>
     /// Delete a Vertex Buffer Object (VBO).
@@ -111,7 +111,7 @@ public:
         GLuint texture,
         GLsizei index_count,
         glm::vec3 position,
-        const CameraID& camera_id) const = 0;
+        const Camera& camera) const = 0;
 };
 
 }

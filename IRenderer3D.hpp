@@ -4,6 +4,24 @@
 
 #include <vector>
 #include <glm/glm.hpp>
+#include <glad/glad.h>
+
+/*
+TODO: GPU Instancing: Be able to draw a ton of the same object all over the scene with a single draw call
+TODO: GPU driven, indirect rendering
+[Scene Manager Service] -> [3D Rendering Service] -> [OpenGL] -> [Compute Shaders (LOD, Culling)] -> [GPU]
+
+So you'll upload all the geometry, all the instances, etc. to the GPU
+Then, you dispatch compute commands that can determine what is visible
+From the visible set, you can populate a buffer containing draw commands
+Then, you would issue an indirect draw call, using the buffer containing the draw commands
+
+A better metric to use for LOD selection is determining the % of the screen size the object takes (vertical, horizontal,
+area, one of these metrics), then using that to select the best suited LOD
+
+Also, another advanced LOD selection technique would be to determine the triangle sizes of the object in pixels,
+and if the triangles are really small, swap out to a lower LOD (less detail)
+*/
 
 namespace core {
 

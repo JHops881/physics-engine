@@ -156,7 +156,7 @@
   <ItemGroup>
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="ID.hpp" />
-    <ClInclude Include="IRenderingEngine.hpp" />
+    <ClInclude Include="IPhysicsSystem.hpp" />
     <ClInclude Include="ISceneManager.hpp" />
     <ClInclude Include="Material.hpp" />
     <ClInclude Include="Mesh.hpp" />
@@ -165,7 +165,7 @@
     <ClInclude Include="PhysicsSystem.hpp" />
     <ClInclude Include="PhysSimApplication.hpp" />
     <ClInclude Include="IRenderer3D.hpp" />
-    <ClInclude Include="RenderingEngine.hpp" />
+    <ClInclude Include="PointMass.hpp" />
     <ClInclude Include="utils.hpp" />
     <ClInclude Include="World.hpp" />
   </ItemGroup>

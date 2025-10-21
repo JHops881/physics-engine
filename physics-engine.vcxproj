@@ -142,33 +142,30 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="IResourceManager.hpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="PhysSimApplication.cpp" />
-    <ClCompile Include="LowLevelRenderer.cpp" />
-    <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="Renderer.hpp" />
-    <ClCompile Include="RenderingEngine.cpp" />
+    <ClCompile Include="Renderer3D.cpp" />
+    <ClCompile Include="Renderer3D.hpp" />
     <ClCompile Include="ServiceLocator.hpp" />
     <ClCompile Include="ShaderSystem.cpp" />
     <ClCompile Include="SparseSet.hpp" />
     <ClCompile Include="utils.cpp" />
-    <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="ID.hpp" />
     <ClInclude Include="IRenderingEngine.hpp" />
+    <ClInclude Include="ISceneManager.hpp" />
     <ClInclude Include="Material.hpp" />
     <ClInclude Include="Mesh.hpp" />
     <ClInclude Include="Model.hpp" />
+    <ClInclude Include="Object.hpp" />
     <ClInclude Include="PhysicsSystem.hpp" />
     <ClInclude Include="PhysSimApplication.hpp" />
-    <ClInclude Include="IRenderer.hpp" />
+    <ClInclude Include="IRenderer3D.hpp" />
     <ClInclude Include="RenderingEngine.hpp" />
-    <ClInclude Include="ResourceManager.hpp" />
-    <ClInclude Include="ShaderSystem.hpp" />
-    <ClInclude Include="Texture.hpp" />
     <ClInclude Include="utils.hpp" />
     <ClInclude Include="World.hpp" />
   </ItemGroup>

@@ -5,7 +5,7 @@
 #include "Mesh.hpp"
 #include "Model.hpp"
 #include "Material.hpp"
-#include "IRenderer.hpp"
+#include "IRenderer3D.hpp"
 #include "ServiceLocator.hpp"
 
 #include <variant>
@@ -28,21 +28,27 @@ namespace core {
 /// Viewports & Virutal Screens, Textures and Surface Management, Debug Drawing, Graphics Device Interface.
 /// "Game Engine Architecture" by Jason Gregory, pg 59 or part II
 /// </summary>
-class Renderer : public Service<IRenderer> {
+class Renderer3D : public Service<IRenderer3D> {
 private:
     std::shared_ptr<ServiceLocator> locator;
-public:
     std::map<CameraID, Camera> cameras;
-    std::map<MeshID,   Mesh>   meshes;
-    std::map<ModelID,  Model>  models;
-    
+    std::map<MeshID, Mesh> meshes;
+    std::map<ModelID, Model> models;
+    std::map<MaterialID, Material> materials;
+    std::map<TextureID, Texture> textures;
+public:
     /// <summary>
     /// Create a new Low Level Renderer.
     /// </summary>
     /// <param name="locator"></param>
-    Renderer(std::shared_ptr<ServiceLocator> locator);
+    Renderer3D(std::shared_ptr<ServiceLocator> locator);
 
-    void draw_geometry(const Mesh& mesh, const glm::vec3& position, const Material& material, const Camera& camera) override;
+    void draw_geometry(
+        const MeshID&     mesh_id,
+        const glm::vec3&  position,
+        const MaterialID& material_id,
+        const CameraID&   camera_id)
+    override;
 };
 
 }

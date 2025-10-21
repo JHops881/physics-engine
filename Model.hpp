@@ -2,7 +2,6 @@
 
 #include "Mesh.hpp"
 #include "ID.hpp"
-#include "Material.hpp"
 
 namespace core {
 
@@ -14,11 +13,10 @@ struct ModelID : public core::ID<ModelID> {
 };
 
 /// <summary>
-/// A model is a coupling of a mesh and its appropriate material it will be rendered as.
+/// A model is the representation of a complete 3D object composed of one or more meshes.
 /// </summary>
 struct Model {
-    MeshID mesh_id;
-    MaterialID material_id;
+    std::vector<MeshID> meshes;
 };
 
 }

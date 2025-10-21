@@ -2,10 +2,18 @@
 #include <iostream>
 #include <chrono>
 #include <string>
+#include <fstream>
 
 #include <glm/glm.hpp>
 
 namespace utils { 
+
+    /// <summary>
+    /// Read a file.
+    /// </summary>
+    /// <param name="filepath">: Path to the file that you want to read</param>
+    /// <returns>A string containing the file text content</returns>
+    std::string read_file(const char* filepath);
 
 	/// <summary>
 	/// Print out the current time in seconds as well as the function name. Call this in debug logging.

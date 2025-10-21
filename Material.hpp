@@ -13,11 +13,11 @@ struct MaterialID : public core::ID<MaterialID> {
 };
 
 /// <summary>
-/// Defines what the surface of a model should look like. A coupling of both the texture and shader.
+/// Defines what the surface of a mesh should look like. A coupling of both the texture and shader.
 /// </summary>
 struct Material {
-    TextureID texture_id;
-    unsigned int shader_program_id;
+    GLuint texture;
+    GLuint shader;
 };
 
 }

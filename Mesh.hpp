@@ -1,5 +1,7 @@
 #pragma once
 #include "ID.hpp"
+#include <glm/glm.hpp>
+#include <vector>
 
 namespace core {
 
@@ -11,12 +13,12 @@ struct MeshID : public core::ID<MeshID> {
 };
 
 /// <summary>
-/// Collection of vertex data and its interpretation that defines a 3D shape.
+/// Collection of vertex data that defines a 3D geometry.
 /// </summary>
 struct Mesh {
-    unsigned int vbo;
-    unsigned int vao;
-    unsigned int ebo;
+    std::vector<GLfloat> vertices;
+    std::vector<GLushort> indices;
+    GLuint texture;
 };
 
 }

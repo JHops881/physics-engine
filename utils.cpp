@@ -1,5 +1,11 @@
 #include "utils.hpp"
 
+std::string utils::read_file(const char* filepath) {
+    std::ifstream file(filepath);
+    std::string file_contents{ std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>() };
+    return file_contents;
+}
+
 void utils::time_and_name_log(const char* function_name) {
 	double now_time = std::chrono::duration<double>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 	std::cout << std::fixed << std::endl << "[" << now_time << "sec] Calling " << function_name << "()" << std::endl;

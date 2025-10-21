@@ -1,10 +1,3 @@
-#include "ShaderSystem.hpp"
-
-std::string core::read_file(const char* filepath) {
-    std::ifstream file(filepath);
-    std::string file_contents{ std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>() };
-    return file_contents;
-}
 
 uint32_t core::ShaderSystem::compile_shader(const char* shader_str, int shader_type) {
     uint32_t shader_id = glCreateShader(shader_type);

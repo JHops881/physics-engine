@@ -2,6 +2,7 @@
 #include "ServiceLocator.hpp"
 #include "IPhysicsSystem.hpp"
 #include "IRenderer3D.hpp"
+#include "IResourceManager.hpp"
 
 #include <chrono>
 #include <format>

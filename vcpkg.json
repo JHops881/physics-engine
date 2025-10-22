@@ -2,8 +2,9 @@
   "name": "physics-engine",
   "version": "0.1.0",
   "dependencies": [
+    "glad",
     "glfw3",
     "glm",
-    "glad"
+    "stb"
   ]
 }

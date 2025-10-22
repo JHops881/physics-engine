@@ -148,8 +148,10 @@
     <ClCompile Include="PhysSimApplication.cpp" />
     <ClCompile Include="Renderer3D.cpp" />
     <ClCompile Include="Renderer3D.hpp" />
+    <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="ServiceLocator.hpp" />
     <ClCompile Include="SparseSet.hpp" />
+    <ClCompile Include="stb.hpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -165,8 +167,8 @@
     <ClInclude Include="PhysSimApplication.hpp" />
     <ClInclude Include="IRenderer3D.hpp" />
     <ClInclude Include="PointMass.hpp" />
+    <ClInclude Include="ResourceManager.hpp" />
     <ClInclude Include="utils.hpp" />
-    <ClInclude Include="World.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\shader.frag" />

@@ -49,18 +49,19 @@ void PhysSimApplication::main_loop() {
 
     auto physics_system = locator->get_service<core::IPhysicsSystem>();
     auto renderer_3d = locator->get_service<core::IRenderer3D>();
+    auto resource_manager = locator->get_service<core::IResourceManager>();
 
     // TODO: All of this needs to leave
     std::vector<GLfloat> vertex_data {
         // positions        // colors
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f, //0
-        0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f, //1
-        0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, //2
-       -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 1.0f, //3
-       -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f, //4
-        0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 1.0f, //5
-       -0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 1.0f, //6
-       -0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 0.0f, //7
+        0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f, 
+        0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f, 
+        0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, 
+       -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 1.0f, 
+       -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f, 
+        0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 1.0f, 
+       -0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 1.0f, 
+       -0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 0.0f, 
     };
 
     std::vector<GLushort> indices {
@@ -90,10 +91,19 @@ void PhysSimApplication::main_loop() {
     GLuint VBO = renderer_3d->new_VBO(vertex_data);
     GLuint EBO = renderer_3d->new_EBO(indices);
     GLuint VAO = renderer_3d->new_VAO(VBO, EBO, 2, {3, 3});
+    std::vector<std::string> faces = {
+        "assets/container.jpg",
+        "assets/container.jpg",
+        "assets/container.jpg",
+        "assets/container.jpg",
+        "assets/container.jpg",
+        "assets/container.jpg",
+    };
+    GLuint texture = resource_manager->load_cubemap(faces);
 
-    core::Camera camera = core::Camera(glm::vec3(0.0f, 0.0f, 10.0f));
+    core::Camera camera = core::Camera(glm::vec3(2.0f, 0.0f, 6.0f));
 
-    core::PointMassID pm_id = physics_system->add_point_mass(glm::vec3(0.0f, 0.0f, 0.0f));
+    core::PointMassID pm_id = physics_system->add_point_mass(glm::vec3(0.0f, 5.0f, 0.0f));
 
     // setup stuff
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -125,7 +135,7 @@ void PhysSimApplication::main_loop() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         core::PointMass& pm = physics_system->get_point_mass(pm_id);
-        renderer_3d->draw_indexed_geometry(VAO, shader, 1, 36, pm.position, camera);
+        renderer_3d->draw_indexed_geometry(VAO, shader, texture, 36, pm.position, camera);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

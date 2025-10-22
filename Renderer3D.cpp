@@ -135,6 +135,7 @@ void core::Renderer3D::draw_indexed_geometry(
 
     glUseProgram(shader);
     glBindVertexArray(VAO);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
     glDrawElements(GL_TRIANGLES, index_count, GL_UNSIGNED_SHORT, 0);
     glBindVertexArray(0);
 }

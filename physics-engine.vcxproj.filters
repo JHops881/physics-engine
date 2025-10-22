@@ -51,11 +51,14 @@
     <ClCompile Include="Renderer3D.cpp">
       <Filter>Source Files\Service Implementations</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderSystem.cpp">
-      <Filter>Source Files\Service Implementations</Filter>
-    </ClCompile>
     <ClCompile Include="PhysSimApplication.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stb.hpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Source Files\Service Implementations</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -92,14 +95,14 @@
     <ClInclude Include="Object.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="World.hpp">
-      <Filter>Header Files\Services</Filter>
-    </ClInclude>
     <ClInclude Include="IPhysicsSystem.hpp">
       <Filter>Header Files\Service Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="PointMass.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.hpp">
+      <Filter>Header Files\Services</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

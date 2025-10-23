@@ -60,6 +60,12 @@
     <ClCompile Include="ResourceManager.cpp">
       <Filter>Source Files\Service Implementations</Filter>
     </ClCompile>
+    <ClCompile Include="SceneRenderingManager.cpp">
+      <Filter>Source Files\Service Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Source Files\Service Implementations</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PhysSimApplication.hpp">
@@ -104,12 +110,21 @@
     <ClInclude Include="ResourceManager.hpp">
       <Filter>Header Files\Services</Filter>
     </ClInclude>
+    <ClInclude Include="ISceneRenderingManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneRenderingManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\shader.frag">
+    <None Include="shaders\cubemap.frag">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="shaders\shader.vert">
+    <None Include="shaders\cubemap.vert">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

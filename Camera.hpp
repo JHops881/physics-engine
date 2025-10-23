@@ -46,6 +46,12 @@ public:
     /// </summary>
     /// <returns>: a view matrix ... from the camera's pov</returns>
     const glm::mat4 get_look_at() const;
+
+    /// <summary>
+    /// Get the current position of the camera in the scene.
+    /// </summary>
+    /// <returns>The current position of the camera</returns>
+    const glm::vec3& get_position() const noexcept;
 };
 
 }

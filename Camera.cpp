@@ -35,3 +35,7 @@ const glm::mat4 core::Camera::get_look_at() const {
     view_matrix = glm::lookAt(position, target, up);
     return view_matrix;
 }
+
+const glm::vec3& core::Camera::get_position() const noexcept {
+    return position;
+}

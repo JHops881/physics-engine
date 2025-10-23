@@ -27,6 +27,7 @@ GLuint core::Renderer3D::new_VBO(const std::vector<GLfloat>& vertex_data) const 
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, vertex_data.size() * sizeof(GLfloat), vertex_data.data(), GL_STATIC_DRAW);
+    glUnmapBuffer(GL_ARRAY_BUFFER);
     return vbo;
 }
 
@@ -35,6 +36,7 @@ GLuint core::Renderer3D::new_EBO(const std::vector<GLushort>& indices) const {
     glGenBuffers(1, &ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLushort), indices.data(), GL_STATIC_DRAW);
+    glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
     return ebo;
 }
 
@@ -63,6 +65,9 @@ GLuint core::Renderer3D::new_VAO(GLuint VBO, GLuint EBO, GLsizei attr_count, std
         starting_point += size;
         attribute_number++;
     }
+    glBindVertexArray(0);
+    glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+    glUnmapBuffer(GL_ARRAY_BUFFER);
     return vao;
 }
 
@@ -120,7 +125,10 @@ void core::Renderer3D::draw_indexed_geometry(
     utils::time_and_name_log(__FUNCTION__);
     utils::print_vec3(position, "position");
     std::cout << std::format("shader_program_id={}", shader) << std::endl;
+    std::cout << "texture=" << texture << std::endl;
 #endif
+    glUseProgram(shader);
+
     glm::mat4 model_matrix = glm::translate(glm::mat4(1.0f), position);
     uint32_t  model_location = glGetUniformLocation(shader, "model");
     glUniformMatrix4fv(model_location, 1, GL_FALSE, glm::value_ptr(model_matrix));
@@ -133,7 +141,6 @@ void core::Renderer3D::draw_indexed_geometry(
     uint32_t  projection_location = glGetUniformLocation(shader, "projection");
     glUniformMatrix4fv(projection_location, 1, GL_FALSE, glm::value_ptr(projection_matrix));
 
-    glUseProgram(shader);
     glBindVertexArray(VAO);
     glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
     glDrawElements(GL_TRIANGLES, index_count, GL_UNSIGNED_SHORT, 0);

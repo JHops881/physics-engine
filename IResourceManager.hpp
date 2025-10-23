@@ -25,7 +25,7 @@ public:
     /// Load a cube map into memory.
     /// </summary>
     /// <param name="texture_filepaths">: A list of file paths to the textures of the cube sides.
-    /// This must be in the order of Right, Left, Top, Bottom, Back, Front.</param>
+    /// This must be in the order of RLTBFB.</param>
     /// <returns>An unsigned int taht is the ID of the cube map.</returns>
     virtual GLuint load_cubemap(std::vector<std::string> texture_filepaths) const = 0;
 

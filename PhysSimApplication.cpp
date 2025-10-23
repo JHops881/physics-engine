@@ -50,18 +50,20 @@ void PhysSimApplication::main_loop() {
     auto physics_system = locator->get_service<core::IPhysicsSystem>();
     auto renderer_3d = locator->get_service<core::IRenderer3D>();
     auto resource_manager = locator->get_service<core::IResourceManager>();
+    auto scene_manager = locator->get_service<core::ISceneManager>();
+    auto scene_rendering_manager = locator->get_service<core::ISceneRenderingManager>();
 
     // TODO: All of this needs to leave
     std::vector<GLfloat> vertex_data {
-        // positions        // colors
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f, 
-        0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f, 
-        0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, 
-       -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 1.0f, 
-       -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f, 
-        0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 1.0f, 
-       -0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 1.0f, 
-       -0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 0.0f, 
+        // positions 
+        0.5f,  0.5f,  0.5f,
+        0.5f,  0.5f, -0.5f,
+        0.5f, -0.5f, -0.5f,
+       -0.5f, -0.5f, -0.5f,
+       -0.5f,  0.5f, -0.5f,
+        0.5f, -0.5f,  0.5f,
+       -0.5f, -0.5f,  0.5f,
+       -0.5f,  0.5f,  0.5f,
     };
 
     std::vector<GLushort> indices {
@@ -84,13 +86,13 @@ void PhysSimApplication::main_loop() {
       0, 7, 4
     };
 
-    const char* vertex_shader_filepath = "shaders/shader.vert";
-    const char* fragment_shader_filepath = "shaders/shader.frag";
+    const char* vertex_shader_filepath = "shaders/cubemap.vert";
+    const char* fragment_shader_filepath = "shaders/cubemap.frag";
     GLuint shader = renderer_3d->new_shader_program(vertex_shader_filepath, fragment_shader_filepath);
 
     GLuint VBO = renderer_3d->new_VBO(vertex_data);
     GLuint EBO = renderer_3d->new_EBO(indices);
-    GLuint VAO = renderer_3d->new_VAO(VBO, EBO, 2, {3, 3});
+    GLuint VAO = renderer_3d->new_VAO(VBO, EBO, 1, {3});
     std::vector<std::string> faces = {
         "assets/container.jpg",
         "assets/container.jpg",
@@ -100,10 +102,22 @@ void PhysSimApplication::main_loop() {
         "assets/container.jpg",
     };
     GLuint texture = resource_manager->load_cubemap(faces);
+    core::PointMassID pm_id = physics_system->add_point_mass(glm::vec3(0.0f, 5.0f, 0.0f));
+
+    std::vector<std::string> skybox_faces = {
+        "assets/right.jpg",
+        "assets/left.jpg",
+        "assets/top.jpg",
+        "assets/bottom.jpg",
+        "assets/front.jpg",
+        "assets/back.jpg",
+    };
+    GLuint skybox = resource_manager->load_cubemap(skybox_faces);
+    std::cout << "skybox_id=" << skybox << std::endl;
+    scene_manager->set_skybox(skybox);
+    scene_rendering_manager->init_skybox_geometry();
 
     core::Camera camera = core::Camera(glm::vec3(2.0f, 0.0f, 6.0f));
-
-    core::PointMassID pm_id = physics_system->add_point_mass(glm::vec3(0.0f, 5.0f, 0.0f));
 
     // setup stuff
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -134,7 +148,9 @@ void PhysSimApplication::main_loop() {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        core::PointMass& pm = physics_system->get_point_mass(pm_id);
+        scene_rendering_manager->render_skybox(camera); // Draw the skybox
+
+        core::PointMass& pm = physics_system->get_point_mass(pm_id); // draw the crate
         renderer_3d->draw_indexed_geometry(VAO, shader, texture, 36, pm.position, camera);
 
         glfwSwapBuffers(window);

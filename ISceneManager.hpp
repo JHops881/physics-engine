@@ -1,9 +1,10 @@
 #pragma once
 #include "Object.hpp"
+#include "ServiceLocator.hpp"
 
 namespace core {
 
-class ISceneManager {
+class ISceneManager : public IService {
 public:
     virtual ~ISceneManager() = default;
 
@@ -15,11 +16,23 @@ public:
     virtual ObjectID add_object(Object object) = 0;
 
     /// <summary>
+    /// Set the scene's skybox.
+    /// </summary>
+    /// <param name="cubemap">: The cubemap that you want the skybox to be.</param>
+    virtual void set_skybox(GLuint cubemap) = 0;
+
+    /// <summary>
     /// Retrieve an object from within the scene.
     /// </summary>
     /// <param name="object_id">: The ID referencing the object that you want to get</param>
     /// <returns>A reference to the object you are getting</returns>
-    virtual Object& get_object(ObjectID object_id) const = 0;
+    virtual Object& get_object(ObjectID object_id) = 0;
+
+    /// <summary>
+    /// Get the ID of the cubemap that the skybox is.
+    /// </summary>
+    /// <returns>The ID of the skybox's cubemap.</returns>
+    virtual GLuint get_skybox() const = 0;
 
     /// <summary>
     /// Remove and object from the scene.
@@ -31,7 +44,7 @@ public:
     /// Get a collection of all the objects that exist within the scene.
     /// </summary>
     /// <returns>A collection of all the objects in the scene</returns>
-    virtual std::vector<Object>& get_all_objects() const = 0;
+    virtual std::vector<Object>& get_all_objects() = 0;
 };
 
 }

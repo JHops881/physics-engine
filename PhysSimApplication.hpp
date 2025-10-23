@@ -3,6 +3,8 @@
 #include "IPhysicsSystem.hpp"
 #include "IRenderer3D.hpp"
 #include "IResourceManager.hpp"
+#include "ISceneManager.hpp"
+#include "ISceneRenderingManager.hpp"
 
 #include <chrono>
 #include <format>

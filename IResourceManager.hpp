@@ -20,7 +20,7 @@ public:
     /// <param name="texture_filepath">: The path for the texture image file.</param>
     /// <returns>An unsigned int that is the ID of the texture.</returns>
     virtual GLuint load_texture(std::string texture_filepath) const = 0;
-    
+
     /// <summary>
     /// Load a cube map into memory.
     /// </summary>

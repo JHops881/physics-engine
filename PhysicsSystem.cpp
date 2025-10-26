@@ -21,7 +21,7 @@ core::PointMassID core::PhysicsSystem::add_point_mass(const glm::vec3& pos) {
         pos,
         glm::vec3(0.0f),
         glm::vec3(0.0f),
-        glm::vec3(0.0f, -21.0f, 0.0f),
+        glm::vec3(0.0f, -1.0f, 0.0f), // gravity
         0.995,
         1.0f
     };

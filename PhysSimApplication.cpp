@@ -4,12 +4,6 @@ void frame_buffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
-void PhysSimApplication::process_input() {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window, true);
-    }
-}
-
 void PhysSimApplication::init_glfw() {
     // Instantiate the GLFW window.
     glfwInit();
@@ -34,6 +28,7 @@ void PhysSimApplication::init_glfw() {
     }
 
     glViewport(0, 0, WIDTH, HEIGHT);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetFramebufferSizeCallback(window, frame_buffer_size_callback);
 }
 
@@ -93,6 +88,7 @@ void PhysSimApplication::main_loop() {
     GLuint VBO = renderer_3d->new_VBO(vertex_data);
     GLuint EBO = renderer_3d->new_EBO(indices);
     GLuint VAO = renderer_3d->new_VAO(VBO, EBO, 1, {3});
+
     std::vector<std::string> faces = {
         "assets/container.jpg",
         "assets/container.jpg",
@@ -117,7 +113,8 @@ void PhysSimApplication::main_loop() {
     scene_manager->set_skybox(skybox);
     scene_rendering_manager->init_skybox_geometry();
 
-    core::Camera camera = core::Camera(glm::vec3(2.0f, 0.0f, 6.0f));
+    core::Camera camera = core::Camera(glm::vec3(2.0f, 0.0f, 6.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+    core::PlayerController pc = core::PlayerController(window);
 
     // setup stuff
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -132,12 +129,12 @@ void PhysSimApplication::main_loop() {
 
     // Application loop
     while (!glfwWindowShouldClose(window)) {
-        process_input();
-
         auto now_time = std::chrono::high_resolution_clock::now();
         double delta_time = std::chrono::duration<double>(now_time - last_update_time).count();
         last_update_time += now_time - last_update_time; // += delta_time but not converted
         accumulator += delta_time;
+
+        pc.process_input(camera, delta_time);
 
         while (accumulator > tick_duration) {
             physics_system->step(tick_duration);
@@ -152,6 +149,7 @@ void PhysSimApplication::main_loop() {
 
         core::PointMass& pm = physics_system->get_point_mass(pm_id); // draw the crate
         renderer_3d->draw_indexed_geometry(VAO, shader, texture, 36, pm.position, camera);
+        renderer_3d->draw_indexed_geometry(VAO, shader, texture, 36, glm::vec3(1.0f), camera);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -163,7 +161,10 @@ void PhysSimApplication::cleanup() {
     glfwTerminate();
 }
 
-PhysSimApplication::PhysSimApplication(std::shared_ptr<core::ServiceLocator> locator) : locator(locator) {}
+PhysSimApplication::PhysSimApplication(std::shared_ptr<core::ServiceLocator> locator)
+    : locator(locator)
+{
+}
 
 void PhysSimApplication::run() {
     init();

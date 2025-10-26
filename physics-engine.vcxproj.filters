@@ -66,6 +66,9 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>Source Files\Service Implementations</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PhysSimApplication.hpp">
@@ -117,6 +120,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerController.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

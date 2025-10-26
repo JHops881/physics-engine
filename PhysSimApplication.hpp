@@ -5,6 +5,7 @@
 #include "IResourceManager.hpp"
 #include "ISceneManager.hpp"
 #include "ISceneRenderingManager.hpp"
+#include "PlayerController.hpp"
 
 #include <chrono>
 #include <format>
@@ -36,13 +37,8 @@ static void frame_buffer_size_callback(GLFWwindow* window, int width, int height
 /// </summary>
 class PhysSimApplication {
 private:
-    GLFWwindow* window;
     std::shared_ptr<core::ServiceLocator> locator;
-
-    /// <summary>
-    /// Handle keyboard and mouse input within the glfw window--call each frame.
-    /// </summary>
-    void process_input();
+    GLFWwindow* window;
 
     /// <summary>
     /// Initialize GLFW.

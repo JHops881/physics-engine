@@ -1,26 +1,33 @@
 #include "PhysSimApplication.hpp"
-#include "MeshRegistry.hpp"
 #include "PhysicsSystem.hpp"
-#include "RenderingSystem.hpp"
-#include "ShaderSystem.hpp"
+#include "Renderer3D.hpp"
+#include "ResourceManager.hpp"
+#include "SceneRenderingManager.hpp"
+#include "SceneManager.hpp"
+#include "ServiceLocator.hpp"
 
-int main()
-{
-    std::shared_ptr<gfx::ShaderSystem>    shader_system    = std::make_shared<gfx::ShaderSystem>();
-    std::shared_ptr<gfx::MeshRegistry>    mesh_registry    = std::make_shared<gfx::MeshRegistry>();
-    std::shared_ptr<phys::PhysicsSystem>  physics_system   = std::make_shared<phys::PhysicsSystem>();
-    std::shared_ptr<gfx::RenderingSystem> rendering_system = std::make_shared<gfx::RenderingSystem>(mesh_registry, physics_system);
+int main() {
+    std::shared_ptr<core::ServiceLocator> locator = std::make_shared<core::ServiceLocator>();
+    
+    std::shared_ptr<core::PhysicsSystem>         physics_system         = std::make_shared<core::PhysicsSystem>(locator);
+    std::shared_ptr<core::Renderer3D>            renderer_3d            = std::make_shared<core::Renderer3D>(locator);
+    std::shared_ptr<core::ResourceManager>       resource_manager       = std::make_shared<core::ResourceManager>(locator);
+    std::shared_ptr<core::SceneManager>          scene_manager          = std::make_shared<core::SceneManager>(locator);
+    std::shared_ptr<core::SceneRenderingManager> scene_rendering_manger = std::make_shared<core::SceneRenderingManager>(locator);
 
-    PhysSimApplication app(shader_system, mesh_registry, physics_system, rendering_system);
-    try
-    {
+    locator->register_service(physics_system);
+    locator->register_service(renderer_3d);
+    locator->register_service(resource_manager);
+    locator->register_service(scene_manager);
+    locator->register_service(scene_rendering_manger);
+
+    PhysSimApplication app(locator);
+
+    try {
         app.run();
-    }
-    catch (const std::exception& exception)
-    {
+    } catch (const std::exception& exception) {
         std::cerr << exception.what() << std::endl;
         return EXIT_FAILURE;
     }
-
     return EXIT_SUCCESS;
 }

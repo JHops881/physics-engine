@@ -13,30 +13,60 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Service Interfaces">
+      <UniqueIdentifier>{0a1d0ba5-ea7f-4e45-b079-aae1c1d3d96d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Services">
+      <UniqueIdentifier>{68751bde-ba3d-4fb6-b60e-5f894ed5f9c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Service Implementations">
+      <UniqueIdentifier>{a5047b4d-98da-4d7f-9908-eefe87c1c691}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PhysSimApplication.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SparseSet.hpp">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IResourceManager.hpp">
+      <Filter>Header Files\Service Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer3D.hpp">
+      <Filter>Header Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceLocator.hpp">
+      <Filter>Header Files\Services</Filter>
+    </ClCompile>
     <ClCompile Include="PhysicsSystem.cpp">
+      <Filter>Source Files\Service Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer3D.cpp">
+      <Filter>Source Files\Service Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysSimApplication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MeshRegistry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderingSystem.hpp">
+    <ClCompile Include="stb.hpp">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderingSystem.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Source Files\Service Implementations</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderSystem.cpp">
+    <ClCompile Include="SceneRenderingManager.cpp">
+      <Filter>Source Files\Service Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Source Files\Service Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,21 +74,63 @@
     <ClInclude Include="PhysSimApplication.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ID.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IRenderer3D.hpp">
+      <Filter>Header Files\Service Interfaces</Filter>
+    </ClInclude>
     <ClInclude Include="PhysicsSystem.hpp">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="ISceneManager.hpp">
+      <Filter>Header Files\Service Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MeshRegistry.hpp">
+    <ClInclude Include="IPhysicsSystem.hpp">
+      <Filter>Header Files\Service Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="PointMass.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderSystem.hpp">
+    <ClInclude Include="ResourceManager.hpp">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="ISceneRenderingManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneRenderingManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerController.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\shader.frag">
+    <None Include="shaders\cubemap.frag">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="shaders\shader.vert">
+    <None Include="shaders\cubemap.vert">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

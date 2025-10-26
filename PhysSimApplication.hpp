@@ -1,8 +1,11 @@
 #pragma once
-#include "MeshRegistry.hpp"
-#include "PhysicsSystem.hpp"
-#include "RenderingSystem.hpp"
-#include "ShaderSystem.hpp"
+#include "ServiceLocator.hpp"
+#include "IPhysicsSystem.hpp"
+#include "IRenderer3D.hpp"
+#include "IResourceManager.hpp"
+#include "ISceneManager.hpp"
+#include "ISceneRenderingManager.hpp"
+#include "PlayerController.hpp"
 
 #include <chrono>
 #include <format>
@@ -32,22 +35,19 @@ static void frame_buffer_size_callback(GLFWwindow* window, int width, int height
 /// <summary>
 /// An application running OpenGL in a GLFW window
 /// </summary>
-class PhysSimApplication
-{
-  private:
-    GLFWwindow*                           window;
-    std::shared_ptr<gfx::ShaderSystem>    shader_system;
-    std::shared_ptr<gfx::MeshRegistry>    mesh_registry;
-    std::shared_ptr<phys::PhysicsSystem>  physics_system;
-    std::shared_ptr<gfx::RenderingSystem> rendering_system;
-    
-    /// <summary>
-    /// Handle keyboard and mouse input within the glfw window--call each frame.
-    /// </summary>
-    void process_input();
+class PhysSimApplication {
+private:
+    std::shared_ptr<core::ServiceLocator> locator;
+    GLFWwindow* window;
 
+    /// <summary>
+    /// Initialize GLFW.
+    /// </summary>
     void init_glfw();
 
+    /// <summary>
+    /// Initialize simulated objects.
+    /// </summary>
     void init_objects();
 
     /// <summary>
@@ -58,26 +58,23 @@ class PhysSimApplication
     void init();
 
     /// <summary>
-    /// Execute the applications main loop
+    /// Execute the application's main loop while it is running.
     /// </summary>
     void main_loop();
 
     /// <summary>
-    /// Clean up application resources after exiting
+    /// Clean up application resources after exiting.
     /// </summary>
     void cleanup();
 
-  public:
-    PhysSimApplication
-    (
-        std::shared_ptr<gfx::ShaderSystem>    shader_system,
-        std::shared_ptr<gfx::MeshRegistry>    mesh_registry,
-        std::shared_ptr<phys::PhysicsSystem>  physics_system,
-        std::shared_ptr<gfx::RenderingSystem> rendering_system
-    );
+public:
+    /// 
+    /// Create a new Physics Simulation Application.
+    // fix documentation
+    PhysSimApplication(std::shared_ptr<core::ServiceLocator> locator);
 
     /// <summary>
-    /// Start & run the application until termination
+    /// Start & run the application until termination.
     /// </summary>
     void run();
 };

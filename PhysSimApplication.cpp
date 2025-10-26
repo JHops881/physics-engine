@@ -1,20 +1,10 @@
 #include "PhysSimApplication.hpp"
 
-void frame_buffer_size_callback(GLFWwindow* window, int width, int height)
-{
+void frame_buffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
-void PhysSimApplication::process_input()
-{
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-    {
-        glfwSetWindowShouldClose(window, true);
-    }
-}
-
-void PhysSimApplication::init_glfw()
-{
+void PhysSimApplication::init_glfw() {
     // Instantiate the GLFW window.
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -38,26 +28,40 @@ void PhysSimApplication::init_glfw()
     }
 
     glViewport(0, 0, WIDTH, HEIGHT);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetFramebufferSizeCallback(window, frame_buffer_size_callback);
 }
 
-void PhysSimApplication::init_objects()
-{
-    // Having fun with shapes!
-    float vertices[]
-    {  // positions        // colors
-       0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f, //0
-       0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f, //1
-       0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, //2
-      -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 1.0f, //3
-      -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f, //4
-       0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 1.0f, //5
-      -0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 1.0f, //6
-      -0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 0.0f, //7
+void PhysSimApplication::init_objects() {
+}
+
+void PhysSimApplication::init() {
+    init_glfw();
+    init_objects();
+}
+
+void PhysSimApplication::main_loop() {
+
+    auto physics_system = locator->get_service<core::IPhysicsSystem>();
+    auto renderer_3d = locator->get_service<core::IRenderer3D>();
+    auto resource_manager = locator->get_service<core::IResourceManager>();
+    auto scene_manager = locator->get_service<core::ISceneManager>();
+    auto scene_rendering_manager = locator->get_service<core::ISceneRenderingManager>();
+
+    // TODO: All of this needs to leave
+    std::vector<GLfloat> vertex_data {
+        // positions 
+        0.5f,  0.5f,  0.5f,
+        0.5f,  0.5f, -0.5f,
+        0.5f, -0.5f, -0.5f,
+       -0.5f, -0.5f, -0.5f,
+       -0.5f,  0.5f, -0.5f,
+        0.5f, -0.5f,  0.5f,
+       -0.5f, -0.5f,  0.5f,
+       -0.5f,  0.5f,  0.5f,
     };
 
-    unsigned int indices[]
-    {
+    std::vector<GLushort> indices {
       3, 2, 1,
       1, 4, 3,
 
@@ -77,114 +81,63 @@ void PhysSimApplication::init_objects()
       0, 7, 4
     };
 
-    const char* vertex_shader_source = "shaders/shader.vert";
-    const char* fragment_shader_source = "shaders/shader.frag";
+    const char* vertex_shader_filepath = "shaders/cubemap.vert";
+    const char* fragment_shader_filepath = "shaders/cubemap.frag";
+    GLuint shader = renderer_3d->new_shader_program(vertex_shader_filepath, fragment_shader_filepath);
 
-    uint32_t shader_program = shader_system->create_shader_program(vertex_shader_source, fragment_shader_source);
+    GLuint VBO = renderer_3d->new_VBO(vertex_data);
+    GLuint EBO = renderer_3d->new_EBO(indices);
+    GLuint VAO = renderer_3d->new_VAO(VBO, EBO, 1, {3});
 
-    uint32_t vbo;
-    glGenBuffers(1, &vbo);
+    std::vector<std::string> faces = {
+        "assets/container.jpg",
+        "assets/container.jpg",
+        "assets/container.jpg",
+        "assets/container.jpg",
+        "assets/container.jpg",
+        "assets/container.jpg",
+    };
+    GLuint texture = resource_manager->load_cubemap(faces);
+    core::PointMassID pm_id = physics_system->add_point_mass(glm::vec3(0.0f, 5.0f, 0.0f));
 
-    uint32_t vao;
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    // position attr
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    // color attr
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
+    std::vector<std::string> skybox_faces = {
+        "assets/right.jpg",
+        "assets/left.jpg",
+        "assets/top.jpg",
+        "assets/bottom.jpg",
+        "assets/front.jpg",
+        "assets/back.jpg",
+    };
+    GLuint skybox = resource_manager->load_cubemap(skybox_faces);
+    std::cout << "skybox_id=" << skybox << std::endl;
+    scene_manager->set_skybox(skybox);
+    scene_rendering_manager->init_skybox_geometry();
 
-    uint32_t ebo;
-    glGenBuffers(1, &ebo);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    core::Camera camera = core::Camera(glm::vec3(2.0f, 0.0f, 6.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+    core::PlayerController pc = core::PlayerController(window);
 
     // setup stuff
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glEnable(GL_DEPTH_TEST);
 
-    gfx::MeshID       mesh_id = mesh_registry->add_mesh({ vbo, vao, ebo, shader_program });
+    // Loop below ---------------------------------------------------
 
-    phys::DynamicID   ap = physics_system->add_dynamic(glm::vec3(-3.0f, 0.0f, -6.5f), glm::vec3(0.0f), glm::vec3(200.0f, 5000.0f, 0.0f), 1.0f);
-    gfx::RenderableID ar = rendering_system->new_renderable({mesh_id, ap});
-
-    std::vector<glm::vec3> block_positions
-    {
-        glm::vec3(-6, -3, -6.5f),
-        glm::vec3(-5, -3, -6.5f),
-        glm::vec3(-4, -3, -6.5f),
-        glm::vec3(-3, -3, -6.5f),
-        glm::vec3(-2, -3, -6.5f),
-        glm::vec3(-1, -3, -6.5f),
-        glm::vec3(0, -3, -6.5f),
-        glm::vec3(1, -3, -6.5f),
-        glm::vec3(2, -3, -6.5f),
-        glm::vec3(3, -3, -6.5f),
-        glm::vec3(5, -3, -6.5f),
-        glm::vec3(4, -3, -6.5f),
-        glm::vec3(6, -3, -6.5f),
-
-        glm::vec3(6, -2, -6.5f),
-        glm::vec3(6, -1, -6.5f),
-        glm::vec3(6, -0, -6.5f),
-        glm::vec3(6, 1, -6.5f),
-        glm::vec3(6, 2, -6.5f),
-
-        glm::vec3(-6, 3, -6.5f),
-        glm::vec3(-5, 3, -6.5f),
-        glm::vec3(-4, 3, -6.5f),
-        glm::vec3(-3, 3, -6.5f),
-        glm::vec3(-2, 3, -6.5f),
-        glm::vec3(-1, 3, -6.5f),
-        glm::vec3(0, 3, -6.5f),
-        glm::vec3(1, 3, -6.5f),
-        glm::vec3(2, 3, -6.5f),
-        glm::vec3(3, 3, -6.5f),
-        glm::vec3(5, 3, -6.5f),
-        glm::vec3(4, 3, -6.5f),
-        glm::vec3(6, 3, -6.5f),
-    
-    };
-    for (glm::vec3& block_pos : block_positions)
-    {
-        phys::StaticID id = physics_system->add_static(block_pos);
-        rendering_system->new_renderable({ mesh_id, id });
-    }
-}
-
-void PhysSimApplication::init()
-{
-    init_glfw();
-    init_objects();
-}
-
-void PhysSimApplication::main_loop()
-{
-    auto last_update_time = std::chrono::duration<double>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+    auto last_update_time = std::chrono::high_resolution_clock::now();
     const double tick_rate = 60.0; // in updates/sec
     const double tick_duration = 1.0 / tick_rate; // 1 second / ticks per second = length of a tick
     double accumulator = 0;
 
     // Application loop
-    while (!glfwWindowShouldClose(window))
-    {
-        process_input();
-
-        double now_time = std::chrono::duration<double>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
-        double delta_time = now_time - last_update_time;
-        last_update_time += delta_time;
+    while (!glfwWindowShouldClose(window)) {
+        auto now_time = std::chrono::high_resolution_clock::now();
+        double delta_time = std::chrono::duration<double>(now_time - last_update_time).count();
+        last_update_time += now_time - last_update_time; // += delta_time but not converted
         accumulator += delta_time;
 
-        while (accumulator > tick_duration)
-        {
+        pc.process_input(camera, delta_time);
+
+        while (accumulator > tick_duration) {
             physics_system->step(tick_duration);
-
-            physics_system->debug_objects();
-
             accumulator -= tick_duration;
         }
 
@@ -192,36 +145,28 @@ void PhysSimApplication::main_loop()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        rendering_system->render();
+        scene_rendering_manager->render_skybox(camera); // Draw the skybox
+
+        core::PointMass& pm = physics_system->get_point_mass(pm_id); // draw the crate
+        renderer_3d->draw_indexed_geometry(VAO, shader, texture, 36, pm.position, camera);
+        renderer_3d->draw_indexed_geometry(VAO, shader, texture, 36, glm::vec3(1.0f), camera);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 }
 
-void PhysSimApplication::cleanup()
-{
+void PhysSimApplication::cleanup() {
     glfwDestroyWindow(window);
     glfwTerminate();
 }
 
-PhysSimApplication::PhysSimApplication
-(
-    std::shared_ptr<gfx::ShaderSystem>    shader_system,
-    std::shared_ptr<gfx::MeshRegistry>    mesh_registry,
-    std::shared_ptr<phys::PhysicsSystem>  physics_system,
-    std::shared_ptr<gfx::RenderingSystem> rendering_system
-)
-    :
-    shader_system(std::move(shader_system)),
-    mesh_registry(std::move(mesh_registry)),
-    physics_system(std::move(physics_system)),
-    rendering_system(std::move(rendering_system))
+PhysSimApplication::PhysSimApplication(std::shared_ptr<core::ServiceLocator> locator)
+    : locator(locator)
 {
 }
 
-void PhysSimApplication::run()
-{
+void PhysSimApplication::run() {
     init();
     main_loop();
     cleanup();

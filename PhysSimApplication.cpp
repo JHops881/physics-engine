@@ -7,8 +7,8 @@ void frame_buffer_size_callback(GLFWwindow* window, int width, int height) {
 void PhysSimApplication::init_glfw() {
     // Instantiate the GLFW window.
     glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Create GLFW window object.
@@ -62,23 +62,12 @@ void PhysSimApplication::main_loop() {
     };
 
     std::vector<GLushort> indices {
-      3, 2, 1,
-      1, 4, 3,
-
-      6, 5, 0,
-      0, 7, 6,
-
-      7, 4, 3,
-      3, 6, 7,
-
-      0, 1, 2,
-      2, 5, 0,
-
-      3, 2, 5,
-      5, 6, 3,
-
-      4, 1, 0,
-      0, 7, 4
+        5, 0, 7, 5, 7, 6,
+        2, 1, 0, 2, 0, 5,
+        3, 4, 1, 3, 1, 2, 
+        6, 7, 4, 6, 4, 3,
+        0, 1, 4, 0, 4, 7,
+        2, 5, 6, 2, 6, 3
     };
 
     const char* vertex_shader_filepath = "shaders/cubemap.vert";
@@ -89,15 +78,16 @@ void PhysSimApplication::main_loop() {
     GLuint EBO = renderer_3d->new_EBO(indices);
     GLuint VAO = renderer_3d->new_VAO(VBO, EBO, 1, {3});
 
-    std::vector<std::string> faces = {
-        "assets/container.jpg",
-        "assets/container.jpg",
-        "assets/container.jpg",
-        "assets/container.jpg",
-        "assets/container.jpg",
-        "assets/container.jpg",
+    std::vector<std::string> faces_lod0 = {
+        "assets/container0.jpg",
+        "assets/container0.jpg",
+        "assets/container0.jpg",
+        "assets/container0.jpg",
+        "assets/container0.jpg",
+        "assets/container0.jpg",
     };
-    GLuint texture = resource_manager->load_cubemap(faces);
+    GLuint texture_lod0 = resource_manager->load_cubemap(faces_lod0);
+
     core::PointMassID pm_id = physics_system->add_point_mass(glm::vec3(0.0f, 5.0f, 0.0f));
 
     std::vector<std::string> skybox_faces = {
@@ -119,6 +109,8 @@ void PhysSimApplication::main_loop() {
     // setup stuff
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glFrontFace(GL_CCW);
 
     // Loop below ---------------------------------------------------
 
@@ -146,9 +138,17 @@ void PhysSimApplication::main_loop() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         core::PointMass& pm = physics_system->get_point_mass(pm_id); // draw the crate
-        renderer_3d->draw_indexed_geometry(VAO, shader, texture, 36, pm.position, camera);
-        renderer_3d->draw_indexed_geometry(VAO, shader, texture, 36, glm::vec3(1.0f), camera);
-
+        renderer_3d->draw_indexed_geometry(VAO, shader, texture_lod0, 36, pm.position, camera);
+        renderer_3d->draw_indexed_geometry(VAO, shader, texture_lod0, 36, glm::vec3(1.0f), camera);
+        int half_size = 10;
+        for (int i = -half_size; i < half_size; i++) {
+            for (int j = -half_size; j < half_size; j++) {
+                float x = static_cast<float>(i);
+                float y = static_cast<float>(j);
+                glm::vec3 pos = glm::vec3(i, 0.0f, j);
+                renderer_3d->draw_indexed_geometry(VAO, shader, texture_lod0, 36, pos , camera);
+            }
+        }
         scene_rendering_manager->render_skybox(camera); // Draw the skybox, always last
 
         glfwSwapBuffers(window);

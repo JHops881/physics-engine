@@ -6,6 +6,13 @@
 #include "SceneManager.hpp"
 #include "ServiceLocator.hpp"
 
+#include <Windows.h>
+// Should force the big GPU.
+extern "C" {
+    _declspec(dllexport) DWORD NvOptimusEnablement = 1;
+    _declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
+}
+
 int main() {
     std::shared_ptr<core::ServiceLocator> locator = std::make_shared<core::ServiceLocator>();
     

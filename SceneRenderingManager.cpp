@@ -15,12 +15,12 @@ void core::SceneRenderingManager::init_skybox_geometry() {
        -0.5f,  0.5f,  0.5f,
     };
     std::vector<GLushort> indices{
-      3, 2, 1, 1, 4, 3,
-      6, 5, 0, 0, 7, 6,
-      7, 4, 3, 3, 6, 7,
-      0, 1, 2, 2, 5, 0,
-      3, 2, 5, 5, 6, 3,
-      4, 1, 0, 0, 7, 4
+        5, 0, 7, 5, 7, 6,
+        2, 1, 0, 2, 0, 5,
+        3, 4, 1, 3, 1, 2,
+        6, 7, 4, 6, 4, 3,
+        0, 1, 4, 0, 4, 7,
+        2, 5, 6, 2, 6, 3
     };
     auto renderer_3d = locator->get_service<core::IRenderer3D>();
 
@@ -39,6 +39,8 @@ void core::SceneRenderingManager::render_skybox(const Camera& camera) const {
     auto scene_manager = locator->get_service<core::ISceneManager>();
     GLuint skybox = scene_manager->get_skybox();
     glDepthFunc(GL_LEQUAL);
+    glCullFace(GL_FRONT);
     renderer_3d->draw_indexed_geometry(skybox_vao, skybox_shader, skybox, 36, camera.get_position(), camera);
+    glCullFace(GL_BACK);
     glDepthFunc(GL_LESS);
 }

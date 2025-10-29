@@ -24,8 +24,8 @@ void core::SceneRenderingManager::init_skybox_geometry() {
     };
     auto renderer_3d = locator->get_service<core::IRenderer3D>();
 
-    const char* vertex_shader_filepath = "shaders/cubemap.vert";
-    const char* fragment_shader_filepath = "shaders/cubemap.frag";
+    const char* vertex_shader_filepath = "shaders/skybox.vert";
+    const char* fragment_shader_filepath = "shaders/skybox.frag";
     skybox_shader = renderer_3d->new_shader_program(vertex_shader_filepath, fragment_shader_filepath);
 
     GLuint VBO = renderer_3d->new_VBO(vertex_data);
@@ -38,7 +38,7 @@ void core::SceneRenderingManager::render_skybox(const Camera& camera) const {
     auto renderer_3d = locator->get_service<core::IRenderer3D>();
     auto scene_manager = locator->get_service<core::ISceneManager>();
     GLuint skybox = scene_manager->get_skybox();
-    glDepthMask(GL_FALSE);
+    glDepthFunc(GL_LEQUAL);
     renderer_3d->draw_indexed_geometry(skybox_vao, skybox_shader, skybox, 36, camera.get_position(), camera);
-    glDepthMask(GL_TRUE);
+    glDepthFunc(GL_LESS);
 }

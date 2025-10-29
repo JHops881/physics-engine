@@ -16,6 +16,8 @@ struct CameraID : public core::ID<CameraID> {
 /// </summary>
 class Camera {
 private:
+
+    // glm::quat orientation;
     /**
      * A note that it is probably best to avoid adding instance variables like 'speed'.
      * I feel that these encourage translation functionality for the camera. fundementally,

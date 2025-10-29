@@ -145,11 +145,11 @@ void PhysSimApplication::main_loop() {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        scene_rendering_manager->render_skybox(camera); // Draw the skybox
-
         core::PointMass& pm = physics_system->get_point_mass(pm_id); // draw the crate
         renderer_3d->draw_indexed_geometry(VAO, shader, texture, 36, pm.position, camera);
         renderer_3d->draw_indexed_geometry(VAO, shader, texture, 36, glm::vec3(1.0f), camera);
+
+        scene_rendering_manager->render_skybox(camera); // Draw the skybox, always last
 
         glfwSwapBuffers(window);
         glfwPollEvents();

@@ -8,6 +8,18 @@ class ISceneManager : public IService {
 public:
     virtual ~ISceneManager() = default;
 
+    // Should this call all the functions to load the different models? This would require lazy loading possibly?
+    // not really needed here, this is just the interface. Let's be the boss here. Boss doesn't care about imple
+    //virtual void load_scene() = 0;
+
+    //virtual void add_prop() = 0;
+
+    //virtual void add_light() = 0;
+
+    //virtual void add_actor() = 0;
+
+    //virtual void add_scenery() = 0;
+
     /// <summary>
     /// Add an object to the scene.
     /// </summary>

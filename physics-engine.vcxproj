@@ -159,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.hpp" />
+    <ClInclude Include="GameObject.hpp" />
     <ClInclude Include="ID.hpp" />
     <ClInclude Include="IPhysicsSystem.hpp" />
     <ClInclude Include="ISceneRenderingManager.hpp" />
@@ -180,6 +181,8 @@
   <ItemGroup>
     <None Include="shaders\cubemap.frag" />
     <None Include="shaders\cubemap.vert" />
+    <None Include="skybox.frag" />
+    <None Include="skybox.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

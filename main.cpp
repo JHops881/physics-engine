@@ -1,4 +1,4 @@
-#include "PhysSimApplication.hpp"
+#include "Application.hpp"
 #include "PhysicsSystem.hpp"
 #include "Renderer3D.hpp"
 #include "ResourceManager.hpp"
@@ -28,7 +28,7 @@ int main() {
     locator->register_service(scene_manager);
     locator->register_service(scene_rendering_manger);
 
-    PhysSimApplication app(locator);
+    Application app(locator);
 
     try {
         app.run();

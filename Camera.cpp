@@ -46,46 +46,40 @@ void core::Camera::set_postition(const glm::vec3& pos) {
     position = pos;
 }
 
-const glm::vec3 core::Camera::get_right() const
-{
+const glm::vec3 core::Camera::get_right() const {
     return right;
 }
 
-const glm::vec3 core::Camera::get_up() const
-{
+const glm::vec3 core::Camera::get_up() const {
     return up;
 }
 
-const glm::vec3 core::Camera::get_front() const
-{
+const glm::vec3 core::Camera::get_front() const {
     return front;
 }
 
-float core::Camera::get_pitch() const
-{
+float core::Camera::get_pitch() const {
     return pitch;
 }
 
-float core::Camera::get_yaw() const
-{
+float core::Camera::get_yaw() const {
     return yaw;
 }
 
-float core::Camera::get_roll() const
-{
+float core::Camera::get_roll() const {
     return roll;
 }
 
-void core::Camera::set_rotation(float p, float y)
-{
+void core::Camera::set_rotation(float p, float y) {
+    // updating the internal state of the camera.
     pitch = p;
     yaw = y;
-
+    // re-calculating the new directional unit vectors based on new angles.
+    // Start with the front, which we use to derive the rest.
     glm::vec3 facing = glm::vec3(0.0f);
     facing.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
     facing.y = sin(glm::radians(pitch));
     facing.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-
     front = glm::normalize(facing);
     right = glm::normalize(glm::cross(front, world_up));
     up = glm::normalize(glm::cross(right, front));

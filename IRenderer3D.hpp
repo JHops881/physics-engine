@@ -59,10 +59,9 @@ public:
     /// </summary>
     /// <param name="VBO">: The VBO that the VAO will store the configuration for.</param>
     /// <param name="EBO">: The EBO associated with the VBO.</param>
-    /// <param name="attr_count">: the total count of VAO attributes that you want.</param>
     /// <param name="sizes">: A series of int values that represent the length of each attribute in the respective order.</param>
     /// <returns>An unsigned integer that is an ID that refers to the (VAO) OpenGL object created.</returns>
-    virtual GLuint new_VAO(GLuint VBO, GLuint EBO, GLsizei attr_count, std::vector<GLint> sizes) const = 0;
+    virtual GLuint new_VAO(GLuint VBO, std::vector<GLint> sizes, GLuint EBO = 0) const = 0;
 
     /// <summary>
     /// Create a new shader program.
@@ -105,13 +104,33 @@ public:
     /// <param name="index_count">: The numbder of indices that you want to draw. (also called elements)</param>
     /// <param name="position">: The location in the scene where the mesh will be drawn.</param>
     /// <param name="camera_id">: A camera--which defines the point of view that the mesh will be rendered from.</param>
-    virtual void draw_indexed_geometry(
+    /// MORE NEEDED
+    virtual void draw_geometry(
         GLuint VAO,
         GLuint shader,
-        GLuint texture,
-        GLsizei index_count,
         glm::vec3 position,
-        const Camera& camera) const = 0;
+        const Camera& camera,
+        bool indexed,
+        GLsizei count,
+        int gl_texture_type = 0,
+        GLuint texture = 0) const = 0;
+
+    virtual void draw_illuminator(
+        GLuint VAO,
+        GLuint shader,
+        glm::vec3 position,
+        const Camera& camera,
+        GLsizei count) const = 0;
+
+    virtual void draw_illuminated(
+        GLuint VAO,
+        GLuint shader,
+        glm::vec3 position,
+        const Camera& camera,
+        GLsizei count,
+        glm::vec3 object_color,
+        glm::vec3 light_color,
+        glm::vec3 light_position) const = 0;
 };
 
 }

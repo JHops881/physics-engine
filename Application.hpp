@@ -35,7 +35,7 @@ static void frame_buffer_size_callback(GLFWwindow* window, int width, int height
 /// <summary>
 /// An application running OpenGL in a GLFW window
 /// </summary>
-class PhysSimApplication {
+class Application {
 private:
     std::shared_ptr<core::ServiceLocator> locator;
     GLFWwindow* window;
@@ -71,7 +71,7 @@ public:
     /// 
     /// Create a new Physics Simulation Application.
     // fix documentation
-    PhysSimApplication(std::shared_ptr<core::ServiceLocator> locator);
+    Application(std::shared_ptr<core::ServiceLocator> locator);
 
     /// <summary>
     /// Start & run the application until termination.

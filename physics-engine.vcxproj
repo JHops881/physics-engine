@@ -145,7 +145,7 @@
     <ClCompile Include="IResourceManager.hpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
-    <ClCompile Include="PhysSimApplication.cpp" />
+    <ClCompile Include="Application.cpp" />
     <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="Renderer3D.cpp" />
     <ClCompile Include="Renderer3D.hpp" />
@@ -169,7 +169,7 @@
     <ClInclude Include="Model.hpp" />
     <ClInclude Include="Object.hpp" />
     <ClInclude Include="PhysicsSystem.hpp" />
-    <ClInclude Include="PhysSimApplication.hpp" />
+    <ClInclude Include="Application.hpp" />
     <ClInclude Include="IRenderer3D.hpp" />
     <ClInclude Include="PlayerController.hpp" />
     <ClInclude Include="PointMass.hpp" />
@@ -181,6 +181,10 @@
   <ItemGroup>
     <None Include="shaders\cubemap.frag" />
     <None Include="shaders\cubemap.vert" />
+    <None Include="shaders\illuminated.frag" />
+    <None Include="shaders\illuminated.vert" />
+    <None Include="shaders\illuminator.frag" />
+    <None Include="shaders\illuminator.vert" />
     <None Include="skybox.frag" />
     <None Include="skybox.vert" />
   </ItemGroup>

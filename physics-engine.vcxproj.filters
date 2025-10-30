@@ -51,7 +51,7 @@
     <ClCompile Include="Renderer3D.cpp">
       <Filter>Source Files\Service Implementations</Filter>
     </ClCompile>
-    <ClCompile Include="PhysSimApplication.cpp">
+    <ClCompile Include="Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stb.hpp">
@@ -71,7 +71,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PhysSimApplication.hpp">
+    <ClInclude Include="Application.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="utils.hpp">
@@ -140,6 +140,18 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="skybox.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders\illuminated.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders\illuminated.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders\illuminator.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders\illuminator.vert">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

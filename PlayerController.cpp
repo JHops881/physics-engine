@@ -5,7 +5,7 @@ core::PlayerController::PlayerController(GLFWwindow* window)
       last_mouse_pos(glm::vec2(0.0f))
 {   
     // initialize the last mouse position to the center of the screen.
-    GLfloat viewport_config[4]; // x, y, width, height
+    GLfloat viewport_config[4]; // 4 values: x (0), y (1), width (2), height (3)
     glGetFloatv(GL_VIEWPORT, viewport_config);
     last_mouse_pos.x = viewport_config[2] / 2.0f;
     last_mouse_pos.y = viewport_config[3] / 2.0f;
@@ -42,8 +42,6 @@ void core::PlayerController::process_input(core::Camera& camera, float delta_tim
     if (p < -89.0f) {
         p = -89.0f;
     }
-    std::cout << p << std::endl;
-    std::cout << y << std::endl;
 
     camera.set_rotation(p, y);
 

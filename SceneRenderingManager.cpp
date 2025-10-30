@@ -1,6 +1,9 @@
 #include "SceneRenderingManager.hpp"
 
-core::SceneRenderingManager::SceneRenderingManager(std::shared_ptr<ServiceLocator> locator) : locator(locator) {}
+core::SceneRenderingManager::SceneRenderingManager(std::shared_ptr<ServiceLocator> locator)
+    : locator(locator)
+{
+}
 
 void core::SceneRenderingManager::init_skybox_geometry() {
     std::vector<GLfloat> vertex_data{
@@ -30,7 +33,7 @@ void core::SceneRenderingManager::init_skybox_geometry() {
 
     GLuint VBO = renderer_3d->new_VBO(vertex_data);
     GLuint EBO = renderer_3d->new_EBO(indices);
-    skybox_vao = renderer_3d->new_VAO(VBO, EBO, 1, { 3 });
+    skybox_vao = renderer_3d->new_VAO(VBO, { 3 }, EBO);
 }
 
 void core::SceneRenderingManager::render_skybox(const Camera& camera) const {
@@ -40,7 +43,8 @@ void core::SceneRenderingManager::render_skybox(const Camera& camera) const {
     GLuint skybox = scene_manager->get_skybox();
     glDepthFunc(GL_LEQUAL);
     glCullFace(GL_FRONT);
-    renderer_3d->draw_indexed_geometry(skybox_vao, skybox_shader, skybox, 36, camera.get_position(), camera);
+    renderer_3d->draw_geometry(
+        skybox_vao, skybox_shader, camera.get_position(), camera, true, 36, GL_TEXTURE_CUBE_MAP, skybox);
     glCullFace(GL_BACK);
     glDepthFunc(GL_LESS);
 }

@@ -146,6 +146,8 @@ void Application::main_loop() {
     // cube VAO for regular-degular cubes.
     GLuint cube_vbo = renderer_3d->new_VBO(vertex_data);
     GLuint cube_vao = renderer_3d->new_VAO(cube_vbo, { 3, 3 } );
+    // cube material
+    core::Material cube_material = core::Material(glm::vec3(1.0f, 0.5f, 0.31f), 0.2f, 0.5f, 32.0f);
     // unique VAO for the light.
     GLuint light_vbo = renderer_3d->new_VBO(vertex_data_light);
     GLuint light_vao = renderer_3d->new_VAO(light_vbo, { 3 } );
@@ -200,19 +202,19 @@ void Application::main_loop() {
         // box
         renderer_3d->draw_illuminated(
             cube_vao, cube_shader, glm::vec3(2.0f, 1.5f, 1.0f), camera, 36,
-            glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(1.0f), light_position);
+            cube_material, glm::vec3(1.0f), light_position);
         renderer_3d->draw_illuminated(
             cube_vao, cube_shader, glm::vec3(3.0f), camera, 36,
-            glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(1.0f), light_position);
+            cube_material, glm::vec3(1.0f), light_position);
         renderer_3d->draw_illuminated(
             cube_vao, cube_shader, glm::vec3(0.0f, -1.7f, -3.1f), camera, 36,
-            glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(1.0f), light_position);
+            cube_material, glm::vec3(1.0f), light_position);
         renderer_3d->draw_illuminated(
             cube_vao, cube_shader, glm::vec3(-3.0f, 0.0f, 1.0f), camera, 36,
-            glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(1.0f), light_position);
+            cube_material, glm::vec3(1.0f), light_position);
         renderer_3d->draw_illuminated(
             cube_vao, cube_shader, glm::vec3(0.0f, -1.0f, 4.0f), camera, 36,
-            glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(1.0f), light_position);
+            cube_material, glm::vec3(1.0f), light_position);
         // Draw the skybox, always last
         // https://freestylized.com/all-skybox/ get some good ones here.
         scene_rendering_manager->render_skybox(camera); 

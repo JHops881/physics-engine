@@ -4,14 +4,14 @@ core::SceneManager::SceneManager(std::shared_ptr<ServiceLocator> locator) : loca
 
 core::ObjectID core::SceneManager::add_object(Object object) {
 #ifdef _DEBUG
-    utils::time_and_name_log(__FUNCTION__);
+    util::time_and_name_log(__FUNCTION__);
 #endif
     return ObjectID(objects.add(object));
 }
 
 void core::SceneManager::set_skybox(GLuint cubemap) {
 #ifdef _DEBUG
-    utils::time_and_name_log(__FUNCTION__);
+    util::time_and_name_log(__FUNCTION__);
     std::cout << "texture=" << cubemap << std::endl;
 #endif
     skybox = cubemap;

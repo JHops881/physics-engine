@@ -13,8 +13,8 @@ core::PointMass& core::PhysicsSystem::get_point_mass(PointMassID id) {
 
 core::PointMassID core::PhysicsSystem::add_point_mass(const glm::vec3& pos) {
 #ifdef _DEBUG
-    utils::time_and_name_log(__FUNCTION__);
-    utils::print_vec3(pos, "pos");
+    util::time_and_name_log(__FUNCTION__);
+    util::print_vec3(pos, "pos");
 #endif
     // defualt particle values
     core::PointMass point_mass {
@@ -31,7 +31,7 @@ core::PointMassID core::PhysicsSystem::add_point_mass(const glm::vec3& pos) {
 
 void core::PhysicsSystem::remove_point_mass(PointMassID id) {
 #ifdef _DEBUG
-    utils::time_and_name_log(__FUNCTION__);
+    util::time_and_name_log(__FUNCTION__);
     std::cout << "id=" << id << std::endl;
     if (!point_masses.has(id)) {
         throw std::runtime_error("core::PhysicsSystem::remove_point_mass() failed. PointMassID doesn't exist.");
@@ -43,7 +43,7 @@ void core::PhysicsSystem::remove_point_mass(PointMassID id) {
 void core::PhysicsSystem::step(float delta_time) {
 // Let's cook this bad boy up with CUDA to accelerate the computing
 #ifdef _DEBUG
-    utils::time_and_name_log(__FUNCTION__);
+    util::time_and_name_log(__FUNCTION__);
     std::cout << "delta_time=" << delta_time << std::endl;
     auto start_time = std::chrono::high_resolution_clock::now();
 #endif
@@ -68,8 +68,8 @@ void core::PhysicsSystem::debug_point_masses() {
     for (auto& p : point_masses.get_dense()) {
         PointMassID id = PointMassID(point_masses.get_associated_handle(i));
         std::cout << "PointMassID: " << std::to_string(id) << std::endl;
-        utils::print_vec3(p.position, "Position");
-        utils::print_vec3(p.velocity, "Velocity");
+        util::print_vec3(p.position, "Position");
+        util::print_vec3(p.velocity, "Velocity");
         i++;
     }
 }

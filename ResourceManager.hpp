@@ -4,7 +4,7 @@
 #include "stb_image.h"
 #include "Mesh.hpp"
 #include "Model.hpp"
-#include "utils.hpp"
+#include "util.hpp"
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>

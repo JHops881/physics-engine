@@ -15,11 +15,11 @@ core::Camera::Camera(glm::vec3 pos, glm::vec3 facing, glm::vec3 up_dir)
       fov(glm::radians(72.0f))
 {
 #ifdef _DEBUG
-    utils::time_and_name_log(__FUNCTION__);
-    utils::print_vec3(position, "position");
-    utils::print_vec3(front, "front");
-    utils::print_vec3(up, "up");
-    utils::print_vec3(right, "right");
+    util::time_and_name_log(__FUNCTION__);
+    util::print_vec3(position, "position");
+    util::print_vec3(front, "front");
+    util::print_vec3(up, "up");
+    util::print_vec3(right, "right");
 
     std::cout << "near_clip_plane=" << near_clip_plane << std::endl;
     std::cout << "far_clip_plane=" << far_clip_plane << std::endl;

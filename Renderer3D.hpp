@@ -4,6 +4,7 @@
 #include "Camera.hpp"
 #include "Mesh.hpp"
 #include "Model.hpp"
+#include "util.hpp"
 #include "Material.hpp"
 #include "IRenderer3D.hpp"
 #include "ServiceLocator.hpp"
@@ -72,7 +73,7 @@ public:
         glm::vec3 position,
         const Camera& camera,
         GLsizei count,
-        glm::vec3 object_color,
+        Material material,
         glm::vec3 light_color,
         glm::vec3 light_position) const override;
 };

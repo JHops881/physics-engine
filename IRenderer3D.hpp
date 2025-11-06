@@ -1,6 +1,7 @@
 #pragma once
 #include "ServiceLocator.hpp"
 #include "Camera.hpp"
+#include "Material.hpp"
 
 #include <vector>
 #include <glm/glm.hpp>
@@ -128,7 +129,7 @@ public:
         glm::vec3 position,
         const Camera& camera,
         GLsizei count,
-        glm::vec3 object_color,
+        Material material,
         glm::vec3 light_color,
         glm::vec3 light_position) const = 0;
 };

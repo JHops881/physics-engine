@@ -1,5 +1,4 @@
 #pragma once
-
 #include "ID.hpp"
 
 namespace core {
@@ -12,11 +11,13 @@ struct MaterialID : public core::ID<MaterialID> {
 };
 
 /// <summary>
-/// Defines what the surface of a mesh should look like. A coupling of both the texture and shader.
+/// Defines what the surface of a mesh should look like.
 /// </summary>
 struct Material {
-    GLuint texture;
-    GLuint shader;
+    glm::vec3 color;
+    GLfloat ambient_strength;
+    GLfloat specular_strength;
+    GLfloat shininess;
 };
 
 }

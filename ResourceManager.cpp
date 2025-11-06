@@ -59,37 +59,37 @@ core::MeshID core::ResourceManager::load_mesh(
 }
 
 core::ModelID core::ResourceManager::new_model(const std::vector<MeshID> meshes) {
-    utils::time_and_name_log(__FUNCTION__);
+    util::time_and_name_log(__FUNCTION__);
     throw std::runtime_error("Implement this!");
 }
 
 core::Mesh& core::ResourceManager::get_mesh(MeshID mesh_id) {
-    utils::time_and_name_log(__FUNCTION__);
+    util::time_and_name_log(__FUNCTION__);
     throw std::runtime_error("Implement this!");
 }
 
 core::Model& core::ResourceManager::get_model(ModelID model_id) {
-    utils::time_and_name_log(__FUNCTION__);
+    util::time_and_name_log(__FUNCTION__);
     throw std::runtime_error("Implement this!");
 }
 
 void core::ResourceManager::unload_texture(GLuint texture) const {
-    utils::time_and_name_log(__FUNCTION__);
+    util::time_and_name_log(__FUNCTION__);
     throw std::runtime_error("Implement this!");
 }
 
 void core::ResourceManager::unload_cubemap(GLuint cubemap) const {
-    utils::time_and_name_log(__FUNCTION__);
+    util::time_and_name_log(__FUNCTION__);
     throw std::runtime_error("Implement this!");
 }
 
 void core::ResourceManager::unload_mesh(MeshID mesh_id) {
-    utils::time_and_name_log(__FUNCTION__);
+    util::time_and_name_log(__FUNCTION__);
     throw std::runtime_error("Implement this!");
 }
 
 void core::ResourceManager::delete_model(ModelID model_id) {
-    utils::time_and_name_log(__FUNCTION__);
+    util::time_and_name_log(__FUNCTION__);
     throw std::runtime_error("Implement this!");
 }
 

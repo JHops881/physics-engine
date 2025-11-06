@@ -155,7 +155,7 @@
     <ClCompile Include="ServiceLocator.hpp" />
     <ClCompile Include="SparseSet.hpp" />
     <ClCompile Include="stb.hpp" />
-    <ClCompile Include="utils.cpp" />
+    <ClCompile Include="util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.hpp" />
@@ -176,7 +176,7 @@
     <ClInclude Include="SceneRenderingManager.hpp" />
     <ClInclude Include="ResourceManager.hpp" />
     <ClInclude Include="SceneManager.hpp" />
-    <ClInclude Include="utils.hpp" />
+    <ClInclude Include="util.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\cubemap.frag" />

@@ -1,5 +1,5 @@
 #pragma once
-#include "utils.hpp"
+#include "util.hpp"
 #include "PointMass.hpp"
 #include "ServiceLocator.hpp"
 

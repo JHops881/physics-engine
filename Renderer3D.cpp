@@ -81,9 +81,9 @@ GLuint core::Renderer3D::new_VAO(GLuint VBO, std::vector<GLint> sizes, GLuint EB
 
 GLuint core::Renderer3D::new_shader_program(const char* vertex_shader_filepath, const char* fragment_shader_filepath) {
     // Read in my shader sources and compile them.
-    std::string vertex_shader_str = utils::read_file(vertex_shader_filepath);
+    std::string vertex_shader_str = util::read_file(vertex_shader_filepath);
     GLuint      vertex_shader     = compile_shader(vertex_shader_str.c_str(), GL_VERTEX_SHADER);
-    std::string fragment_shader_str = utils::read_file(fragment_shader_filepath);
+    std::string fragment_shader_str = util::read_file(fragment_shader_filepath);
     GLuint      fragment_shader     = compile_shader(fragment_shader_str.c_str(), GL_FRAGMENT_SHADER);
     // Here's where the magic happens.
     GLuint shader_program = glCreateProgram();
@@ -106,22 +106,22 @@ GLuint core::Renderer3D::new_shader_program(const char* vertex_shader_filepath, 
 }
 
 void core::Renderer3D::delete_VBO(GLuint VBO) const {
-    utils::time_and_name_log(__FUNCTION__);
+    util::time_and_name_log(__FUNCTION__);
     throw std::runtime_error("Unimplemented!");
 }
 
 void core::Renderer3D::delete_EBO(GLuint EBO) const {
-    utils::time_and_name_log(__FUNCTION__);
+    util::time_and_name_log(__FUNCTION__);
     throw std::runtime_error("Unimplemented!");
 }
 
 void core::Renderer3D::delete_VAO(GLuint VAO) const {
-    utils::time_and_name_log(__FUNCTION__);
+    util::time_and_name_log(__FUNCTION__);
     throw std::runtime_error("Unimplemented!");
 }
 
 void core::Renderer3D::delete_shader_program(GLuint shader) const {
-    utils::time_and_name_log(__FUNCTION__);
+    util::time_and_name_log(__FUNCTION__);
     throw std::runtime_error("Unimplemented!");
 }
 
@@ -196,40 +196,43 @@ void core::Renderer3D::draw_illuminated(
     glm::vec3     position,
     const Camera& camera,
     GLsizei       count,
-    glm::vec3     object_color,
+    Material      material,
     glm::vec3     light_color,
     glm::vec3     light_position)
 const {
     // This needs to be called before changing the transformation matrices
     glUseProgram(shader);
+
     // Affected by Lights
-    uint32_t light_pos_loc = glGetUniformLocation(shader, "lightPos");
-    glUniform3fv(light_pos_loc, 1, glm::value_ptr(light_position));
-    // Object Color Uniforms.
-    uint32_t object_color_loc = glGetUniformLocation(shader, "objectColor");
-    uint32_t light_color_loc = glGetUniformLocation(shader, "lightColor");
-    glUniform3fv(object_color_loc, 1, glm::value_ptr(object_color));
-    glUniform3fv(light_color_loc, 1, glm::value_ptr(light_color));
+    util::set_uniform_vec3(shader, "lightPos", light_position);
+    // light color.
+    util::set_uniform_vec3(shader, "lightColor", light_color);
+
+    // Material
+    util::set_uniform_vec3(shader, "material.color", material.color);
+    util::set_uniform_float(shader, "material.ambientStrength", material.ambient_strength);
+    util::set_uniform_float(shader, "material.specularStrength", material.specular_strength);
+    util::set_uniform_float(shader, "material.shininess", material.shininess);
+
     // Model - Based on where the mesh is being drawn in the 3d space.
     glm::mat4 model_matrix = glm::translate(glm::mat4(1.0f), position);
-    uint32_t  model_location = glGetUniformLocation(shader, "model");
-    glUniformMatrix4fv(model_location, 1, GL_FALSE, glm::value_ptr(model_matrix));
+    util::set_uniform_mat4(shader, "model", model_matrix);
+
     // Calculate the normal matrix - essential for non-uniformly scaled meshes.
     // The normal matrix properly transforms normals to world coordinates.
     glm::mat3 normal_matrix = glm::transpose(glm::inverse(model_matrix));
-    uint32_t normal_matrix_loc = glGetUniformLocation(shader, "normalMatrix");
-    glUniformMatrix3fv(normal_matrix_loc, 1, GL_FALSE, glm::value_ptr(normal_matrix));
+    util::set_uniform_mat3(shader, "normalMatrix", normal_matrix);
+
     // Hand off the position of the viewer - for specular lighting.
-    uint32_t view_pos_loc = glGetUniformLocation(shader, "viewPos");
-    glUniform3fv(view_pos_loc, 1, glm::value_ptr(camera.get_position()));
+    util::set_uniform_vec3(shader, "viewPos", camera.get_position());
+
     // View - Based on 'from what angle/postion' the mesh will be perceived in the 3d space.
     glm::mat4 view_matrix = camera.get_look_at();
-    uint32_t  view_location = glGetUniformLocation(shader, "view");
-    glUniformMatrix4fv(view_location, 1, GL_FALSE, glm::value_ptr(view_matrix));
+    util::set_uniform_mat4(shader, "view", view_matrix);
+
     // Projection - Based on the perspective settings of the camera/application.
     glm::mat4 projection_matrix = camera.get_perspective();
-    uint32_t  projection_location = glGetUniformLocation(shader, "projection");
-    glUniformMatrix4fv(projection_location, 1, GL_FALSE, glm::value_ptr(projection_matrix));
+    util::set_uniform_mat4(shader, "projection", projection_matrix);
 
     glBindVertexArray(VAO);
     glDrawArrays(GL_TRIANGLES, 0, count);

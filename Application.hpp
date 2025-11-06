@@ -6,6 +6,7 @@
 #include "ISceneManager.hpp"
 #include "ISceneRenderingManager.hpp"
 #include "PlayerController.hpp"
+#include "Material.hpp"
 
 #include <chrono>
 #include <format>

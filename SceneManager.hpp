@@ -3,7 +3,7 @@
 #include "ServiceLocator.hpp"
 #include "ISceneManager.hpp"
 #include "SparseSet.hpp"
-#include "utils.hpp"
+#include "util.hpp"
 
 #include <glad/glad.h>
 

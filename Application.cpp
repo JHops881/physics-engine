@@ -49,47 +49,47 @@ void Application::main_loop() {
     // This is for a cube.
     std::vector<GLfloat> vertex_data = {
         // FRONT
-        0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f, //5
-        0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f, //0
-       -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f, //7
-        0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f, //5
-       -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f, //7
-       -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f, //6
+        0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f, 1.0f, 0.0f,//5
+        0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f,//0
+       -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f, 0.0f, 1.0f,//7
+        0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f, 1.0f, 0.0f,//5
+       -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f, 0.0f, 1.0f,//7
+       -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f,//6
         // RIGHT
-        0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f, //2
-        0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f, //1
-        0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f, //0
-        0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f, //2
-        0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f, //0
-        0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f, //5
+        0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,//2
+        0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f, 1.0f, 1.0f,//1
+        0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f,//0
+        0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,//2
+        0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f,//0
+        0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f, 0.0f, 0.0f,//5
         // BACK
-       -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, //3
-       -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, //4
-        0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, //1
-       -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, //3
-        0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, //1
-        0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, //2
+       -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f,//3
+       -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 0.0f, 1.0f,//4
+        0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f,//1
+       -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f,//3
+        0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f,//1
+        0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 1.0f, 0.0f,//2
         // LEFT
-       -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f, //6
-       -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f, //7
-       -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f, //4
-       -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f, //6
-       -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f, //4
-       -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f, //3
+       -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f, 0.0f, 0.0f,//6
+       -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f,//7
+       -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f, 1.0f, 1.0f,//4
+       -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f, 0.0f, 0.0f,//6
+       -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f, 1.0f, 1.0f,//4
+       -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,//3
         // TOP
-        0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f, //0
-        0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f, //1
-       -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f, //4
-        0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f, //0
-       -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f, //4
-       -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f, //7
+        0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f,//0
+        0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f, 1.0f, 1.0f,//1
+       -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f,//4
+        0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f,//0
+       -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f,//4
+       -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f, 0.0f, 0.0f,//7
         // BOTTOM
-        0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f, //2
-        0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f, //5
-       -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f, //6
-        0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f, //2
-       -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f, //6
-       -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f  //3
+        0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f, 1.0f, 1.0f,//2
+        0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f,//5
+       -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f, 0.0f, 0.0f,//6
+        0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f, 1.0f, 1.0f,//2
+       -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f, 0.0f, 0.0f,//6
+       -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f//3
     };
     // This is for light.
     std::vector<GLfloat> vertex_data_light = {
@@ -135,6 +135,7 @@ void Application::main_loop() {
        -0.5f, -0.5f,  0.5f, //6
        -0.5f, -0.5f, -0.5f, //3
     };
+
     // cube shader.
     const char* illuminated_vertex = "shaders/illuminated.vert";
     const char* illuminated_fragment = "shaders/illuminated.frag";
@@ -143,14 +144,23 @@ void Application::main_loop() {
     const char* illuminator_vertex = "shaders/illuminator.vert";
     const char* illuminator_fragment = "shaders/illuminator.frag";
     GLuint light_shader = renderer_3d->new_shader_program(illuminator_vertex, illuminator_fragment);
+
     // cube VAO for regular-degular cubes.
     GLuint cube_vbo = renderer_3d->new_VBO(vertex_data);
-    GLuint cube_vao = renderer_3d->new_VAO(cube_vbo, { 3, 3 } );
+    GLuint cube_vao = renderer_3d->new_VAO(cube_vbo, { 3, 3, 2} );
+
     // cube material
-    core::Material cube_material = core::Material(glm::vec3(1.0f, 0.5f, 0.31f), 0.2f, 0.5f, 32.0f);
+    GLuint cube_texture = resource_manager->load_texture("assets/container2.png");
+    core::Material cube_material = core::Material(
+        cube_texture,
+        glm::vec3(0.774597f),
+        0.6f
+    );
+
     // unique VAO for the light.
     GLuint light_vbo = renderer_3d->new_VBO(vertex_data_light);
     GLuint light_vao = renderer_3d->new_VAO(light_vbo, { 3 } );
+
     // skybox texture - load into memory.
     std::vector<std::string> skybox_cubemap_faces = {
         "assets/px.jpg",
@@ -164,9 +174,11 @@ void Application::main_loop() {
     // This seems like a dangerous pattern.
     scene_manager->set_skybox(skybox_cubemap);
     scene_rendering_manager->init_skybox_geometry();
+
     // Camera and User Input Interface (Player Controller (needs to change) ) for movement.
     core::Camera camera = core::Camera(glm::vec3(2.0f, 0.0f, 6.0f), glm::vec3(0.0f, 0.0f, -1.0f));
     core::PlayerController pc = core::PlayerController(window);
+
     // setup stuff
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glEnable(GL_DEPTH_TEST);
@@ -193,13 +205,16 @@ void Application::main_loop() {
             // physics_system->step(tick_duration);
             accumulator -= tick_duration;
         }
+
         // Clean wash for each frame.
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         // draw a light.
         glm::vec3 light_position = glm::vec3(0.0f, 0.0f, 0.0f);
         renderer_3d->draw_illuminator(light_vao, light_shader, light_position, camera, 36);
-        // box
+
+        // boxes
         renderer_3d->draw_illuminated(
             cube_vao, cube_shader, glm::vec3(2.0f, 1.5f, 1.0f), camera, 36,
             cube_material, glm::vec3(1.0f), light_position);
@@ -215,6 +230,7 @@ void Application::main_loop() {
         renderer_3d->draw_illuminated(
             cube_vao, cube_shader, glm::vec3(0.0f, -1.0f, 4.0f), camera, 36,
             cube_material, glm::vec3(1.0f), light_position);
+
         // Draw the skybox, always last
         // https://freestylized.com/all-skybox/ get some good ones here.
         scene_rendering_manager->render_skybox(camera); 

@@ -14,9 +14,8 @@ struct MaterialID : public core::ID<MaterialID> {
 /// Defines what the surface of a mesh should look like.
 /// </summary>
 struct Material {
-    glm::vec3 color;
-    GLfloat ambient_strength;
-    GLfloat specular_strength;
+    GLuint texture;
+    glm::vec3 specular;
     GLfloat shininess;
 };
 

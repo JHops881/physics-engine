@@ -204,15 +204,16 @@ const {
     glUseProgram(shader);
 
     // Affected by Lights
-    util::set_uniform_vec3(shader, "lightPos", light_position);
+    util::set_uniform_vec3(shader, "light.position", light_position);
     // light color.
-    util::set_uniform_vec3(shader, "lightColor", light_color);
+    util::set_uniform_vec3(shader, "light.ambient", glm::vec3(0.2f)); // hardcoded
+    util::set_uniform_vec3(shader, "light.diffuse", glm::vec3(0.5f));
+    util::set_uniform_vec3(shader, "light.specular", glm::vec3(1.0f));
+    const GLfloat MAX_SHININESS = 128.0f; // magic number :)
 
     // Material
-    util::set_uniform_vec3(shader, "material.color", material.color);
-    util::set_uniform_float(shader, "material.ambientStrength", material.ambient_strength);
-    util::set_uniform_float(shader, "material.specularStrength", material.specular_strength);
-    util::set_uniform_float(shader, "material.shininess", material.shininess);
+    util::set_uniform_vec3(shader, "material.specular", material.specular);
+    util::set_uniform_float(shader, "material.shininess", material.shininess * MAX_SHININESS);
 
     // Model - Based on where the mesh is being drawn in the 3d space.
     glm::mat4 model_matrix = glm::translate(glm::mat4(1.0f), position);
@@ -235,6 +236,8 @@ const {
     util::set_uniform_mat4(shader, "projection", projection_matrix);
 
     glBindVertexArray(VAO);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, material.texture);
     glDrawArrays(GL_TRIANGLES, 0, count);
     glBindVertexArray(0);
 }

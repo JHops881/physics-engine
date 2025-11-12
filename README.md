@@ -1,10 +1,11 @@
 # Scarab
-My first large C++ project: a fully-featured game engine from scratch using C++ and OpenGL.
+A game engine from scratch aimed at learning, experimentation, and use in future projects. It is planned to be fully featured, however the roadmap to reach that is quite long. I am intentionally designing the engine to be best suited for open world games with high visual fidelity. I am excited to get hands on with the techniques required to execute this like Physically-Based Rendering (PBR), Asset Streaming, and Level of Detail (LOD) Rendering. I am currenting using OpenGL to build out the rendering engine but, I am anticipating making the switch to Vulkan later down the line, especially to implement Asset Streaming because of its native multithreading support. 
 
-### Development Sneak Peaks
-First time gravity got working
-<br /> 
-<img width="433" height="638" alt="image" src="https://github.com/user-attachments/assets/6d62d850-f351-4772-b42c-3aee3abe7221" />
+![Language](https://img.shields.io/badge/language-C++-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![Status](https://img.shields.io/badge/status-in%20development-orange.svg)
+
+### Development Preview
 <br /> 
 Collision first working, although the gravity needs to be turned up
 <br /> 

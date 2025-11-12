@@ -6,7 +6,6 @@ A game engine from scratch aimed at learning, experimentation, and use in future
 ![Status](https://img.shields.io/badge/status-in%20development-orange.svg)
 
 ### Development Preview
-<br /> 
 Collision first working, although the gravity needs to be turned up
 <br /> 
 ![gif](https://github.com/user-attachments/assets/8dc4d491-e517-4c77-b228-21f4c76ff603)

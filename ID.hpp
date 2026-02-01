@@ -25,10 +25,8 @@ struct ID {
 
     explicit ID(uint32_t v) : value(v) {}
 
-    // Implicit conversion to uint32_t
     operator uint32_t() const { return value; }
 
-    // Equality operators
     bool operator==(const Derived& other) const {
         return value == other.value;
     }

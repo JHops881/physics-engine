@@ -18,13 +18,13 @@ class Camera {
 private:
 
     // glm::quat orientation;
-    /**
-     * A note that it is probably best to avoid adding instance variables like 'speed'.
-     * I feel that these encourage translation functionality for the camera. fundementally,
-     * the camera exists in the scene at a position--it itself is not a moving entity.
-     * The illusion of movement is created when setting the position of the camera
-     * in accordance with some other entity or functionality.
-     */
+
+    /// <summary>
+    /// A note that it is probably best to avoid adding instance variables like 'speed'. I feel that these
+    /// encourage translation functionality for the camera.fundementally, the camera exists in the scene at a
+    /// position--it itself is not a moving entity. The illusion of movement is created when setting the 
+    /// position of the camera in accordance with some other entity or functionality.
+    /// </summary>
     glm::vec3 position;
     glm::vec3 front; // the direction in which the camera is facing
     glm::vec3 up;

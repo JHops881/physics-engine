@@ -7,6 +7,7 @@
 #include "ISceneRenderingManager.hpp"
 #include "PlayerController.hpp"
 #include "Material.hpp"
+#include "AppValues.hpp"
 
 #include <chrono>
 #include <format>
@@ -20,9 +21,6 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-
-constexpr uint32_t WIDTH = 1600;
-constexpr uint32_t HEIGHT = 900;
 
 /// <summary>
 /// OpenGL Viewport exists inside the GLFW Window. Call this function every time
@@ -71,7 +69,7 @@ private:
 public:
     /// 
     /// Create a new Physics Simulation Application.
-    // fix documentation
+    //  TODO: fix documentation
     Application(std::shared_ptr<core::ServiceLocator> locator);
 
     /// <summary>

@@ -141,7 +141,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AppValues.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ConfigurationContext.cpp" />
+    <ClCompile Include="ConfigurationManager.cpp" />
+    <ClCompile Include="ConfigurationManager.hpp" />
     <ClCompile Include="IResourceManager.hpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
@@ -158,8 +162,11 @@
     <ClCompile Include="util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AppValues.hpp" />
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="GameObject.hpp" />
+    <ClInclude Include="ConfigurationContext.hpp" />
+    <ClInclude Include="IConfigurationManager.hpp" />
     <ClInclude Include="ID.hpp" />
     <ClInclude Include="IPhysicsSystem.hpp" />
     <ClInclude Include="ISceneRenderingManager.hpp" />

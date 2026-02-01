@@ -69,6 +69,18 @@
     <ClCompile Include="PlayerController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ConfigurationManager.hpp">
+      <Filter>Header Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="ConfigurationManager.cpp">
+      <Filter>Source Files\Service Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="ConfigurationContext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AppValues.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.hpp">
@@ -113,9 +125,6 @@
     <ClInclude Include="ResourceManager.hpp">
       <Filter>Header Files\Services</Filter>
     </ClInclude>
-    <ClInclude Include="ISceneRenderingManager.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SceneRenderingManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -127,6 +136,18 @@
     </ClInclude>
     <ClInclude Include="GameObject.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AppValues.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IConfigurationManager.hpp">
+      <Filter>Header Files\Service Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="ConfigurationContext.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ISceneRenderingManager.hpp">
+      <Filter>Header Files\Service Interfaces</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

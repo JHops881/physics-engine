@@ -5,28 +5,36 @@ void frame_buffer_size_callback(GLFWwindow* window, int width, int height) {
 }
 
 void Application::init_glfw() {
+    
     // Instantiate the GLFW window.
     glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, APP_OPENGL_VERSION_MAJOR);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, APP_OPENGL_VERSION_MINOR);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
     // Create GLFW window object.
     window = glfwCreateWindow(WIDTH, HEIGHT, "Scarab Application", NULL, NULL);
+    
     if (window == NULL) {
         cleanup();
         throw std::runtime_error("Failed to create GLFW window");
     }
+    
     // Bind the OpenGL context to the current GLFW window.
     glfwMakeContextCurrent(window);
+    
     // Initialize GLAD
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         cleanup();
         throw std::runtime_error("Failed to intialize GLAD");
     }
+    
     // Place the OpenGL viewport in the GLFW window
     glViewport(0, 0, WIDTH, HEIGHT);
+    
     // configuring GLFW window settings.
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // No mouse, for first person
+    
     // automatically readjust viewport to window size changes
     glfwSetFramebufferSizeCallback(window, frame_buffer_size_callback); 
 }
@@ -40,12 +48,8 @@ void Application::init() {
 }
 
 // At some point, we will rip this entry point out--actually, the window management should get ripped out.
-void Application::main_loop() {
-    // Grabbing interfaces to all of our services that we need.
-    auto renderer_3d = locator->get_service<core::IRenderer3D>();
-    auto resource_manager = locator->get_service<core::IResourceManager>();
-    auto scene_manager = locator->get_service<core::ISceneManager>();
-    auto scene_rendering_manager = locator->get_service<core::ISceneRenderingManager>();
+void Application::main_loop() {   
+   
     // This is for a cube.
     std::vector<GLfloat> vertex_data = {
         // FRONT
@@ -136,10 +140,16 @@ void Application::main_loop() {
        -0.5f, -0.5f, -0.5f, //3
     };
 
+    auto renderer_3d = locator->get_service<core::IRenderer3D>();
+    auto resource_manager = locator->get_service<core::IResourceManager>();
+    auto scene_manager = locator->get_service<core::ISceneManager>();
+    auto scene_rendering_manager = locator->get_service<core::ISceneRenderingManager>();
+
     // cube shader.
     const char* illuminated_vertex = "shaders/illuminated.vert";
     const char* illuminated_fragment = "shaders/illuminated.frag";
     GLuint cube_shader = renderer_3d->new_shader_program(illuminated_vertex, illuminated_fragment);
+    
     // light shader
     const char* illuminator_vertex = "shaders/illuminator.vert";
     const char* illuminator_fragment = "shaders/illuminator.frag";
@@ -171,6 +181,7 @@ void Application::main_loop() {
         "assets/nz.jpg"
     };
     GLuint skybox_cubemap = resource_manager->load_cubemap(skybox_cubemap_faces);
+    
     // This seems like a dangerous pattern.
     scene_manager->set_skybox(skybox_cubemap);
     scene_rendering_manager->init_skybox_geometry();
@@ -202,6 +213,7 @@ void Application::main_loop() {
         pc.process_input(camera, delta_time);
 
         while (accumulator > tick_duration) {
+            
             // physics_system->step(tick_duration);
             accumulator -= tick_duration;
         }
